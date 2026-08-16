@@ -25,7 +25,7 @@ const notes = items.filter((item) => !item.data.featured);
 
     {
       featured && (
-        <a href={`/conservation/${featured.id}`} class="mt-12 block">
+        <a href={`/conservation/${featured.id}`} class="mt-12 block" aria-label={featured.data.title}>
           <GlassPanel strong class="overflow-hidden transition hover:border-gold">
             <div class="grid md:grid-cols-2">
               {featured.data.image && (
@@ -55,7 +55,7 @@ const notes = items.filter((item) => !item.data.featured);
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {
         notes.map((item) => (
-          <a href={`/conservation/${item.id}`}>
+          <a href={`/conservation/${item.id}`} aria-label={item.data.title}>
             <GlassPanel strong class="h-full p-8 transition hover:border-gold">
               {item.data.species && (
                 <p class="text-sm uppercase tracking-[0.2em] text-gel">{item.data.species}</p>

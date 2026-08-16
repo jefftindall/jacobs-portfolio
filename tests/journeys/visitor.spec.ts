@@ -21,7 +21,7 @@ test.describe('visitor journeys', () => {
     await expect(page.getByRole('heading', { name: 'Conservation', level: 1 })).toBeVisible();
 
     for (const note of conservation) {
-      await page.getByRole('link', { name: note.title }).click();
+      await page.getByRole('link', { name: note.title, exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`/conservation/${note.id}/?$`));
       await expect(page.getByRole('heading', { name: note.title, level: 1 })).toBeVisible();
       await page.getByRole('link', { name: /All conservation/i }).click();
@@ -36,7 +36,7 @@ test.describe('visitor journeys', () => {
     await expect(page.getByRole('heading', { name: 'Music', level: 1 })).toBeVisible();
 
     for (const note of music) {
-      await page.getByRole('link', { name: note.title }).click();
+      await page.getByRole('link', { name: note.title, exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`/music/${note.id}/?$`));
       await expect(page.getByRole('heading', { name: note.title, level: 1 })).toBeVisible();
       await page.getByRole('link', { name: /All music/i }).click();
