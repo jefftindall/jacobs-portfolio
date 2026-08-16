@@ -13,6 +13,35 @@ function siteUrl(): string {
   return (raw || 'http://localhost:4321').replace(/\/$/, '');
 }
 
+export const socials = {
+  soundcloud: {
+    label: 'SoundCloud',
+    href: 'https://soundcloud.com/jacob-tindall-official',
+  },
+  facebook: {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/people/Jacob-Tindall/pfbid05jcM6JwUeou1SQDT17QiWTRKDSJPWhmHoZfGdT9i4F45MPwm3WRhyxkt7MR5Hd1cl/',
+  },
+} as const;
+
+export const soundcloud = {
+  ...socials.soundcloud,
+  tracks: [
+    {
+      title: 'Natures Wedding',
+      href: 'https://soundcloud.com/jacob-tindall-official/natures-wedding',
+    },
+    {
+      title: 'NASCAR',
+      href: 'https://soundcloud.com/jacob-tindall-official/untitled-song-1',
+    },
+    {
+      title: 'Battle Cry in C Minor',
+      href: 'https://soundcloud.com/jacob-tindall-official/battle-cry-c-minor1',
+    },
+  ],
+} as const;
+
 export const site = {
   name: 'Jacob Tindall',
   tagline: 'Marine mammal conservation and music',
@@ -30,6 +59,7 @@ export const site = {
     'Piano',
     'Music composition',
   ],
+  sameAs: [socials.soundcloud.href, socials.facebook.href],
 };
 
 export { nav } from './nav';

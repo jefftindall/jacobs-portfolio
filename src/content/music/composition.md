@@ -1,11 +1,16 @@
 ---
 title: Composition
-summary: Writing music — a starter page for original pieces and ideas.
+summary: Original piano pieces Jacob has written and posted on SoundCloud.
 kind: composition
 featured: true
 order: 2
+year: 2026
 ---
 
-Replace this placeholder with how you write music.
+These are original pieces Jacob has shared. Titles are his. Listen on [SoundCloud](https://soundcloud.com/jacob-tindall-official):
 
-You might describe a piece you composed, what inspired it (ocean, a melody, a game world — without sharing account names), or how you start a new idea.
+- [Natures Wedding](https://soundcloud.com/jacob-tindall-official/natures-wedding)
+- [NASCAR](https://soundcloud.com/jacob-tindall-official/untitled-song-1)
+- [Battle Cry in C Minor](https://soundcloud.com/jacob-tindall-official/battle-cry-c-minor1)
+
+If you write a new piece, add it to SoundCloud first, then add the link here.

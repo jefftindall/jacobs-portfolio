@@ -1,11 +1,11 @@
 ---
 title: Piano
-summary: Playing piano — a starter page for pieces, practice, and what you are learning.
+summary: Classical-style piano — practice, pieces, and recordings on SoundCloud.
 kind: piano
 featured: true
 order: 1
 ---
 
-Replace this placeholder with your own piano story.
+Jacob plays piano and likes writing pieces that feel classical. He records them so other people can listen.
 
-You might mention pieces you are learning, what you like about the instrument, or a performance you are proud of. Do not include school names unless a parent says it is okay.
+The latest tracks live on [SoundCloud](https://soundcloud.com/jacob-tindall-official), including **Natures Wedding**, **NASCAR**, and **Battle Cry in C Minor**. Open the [music page](/music) to play them here, or visit SoundCloud for the full player.

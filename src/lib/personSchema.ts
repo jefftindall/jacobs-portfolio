@@ -9,6 +9,7 @@ export function buildPersonJsonLd(overrides: Record<string, unknown> = {}): Reco
     jobTitle: site.jobTitle,
     description: site.description,
     knowsAbout: site.knowsAbout,
+    sameAs: site.sameAs,
   };
 
   return { ...person, ...overrides };

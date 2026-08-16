@@ -1,17 +1,21 @@
 ---
 title: Manatees
-summary: Gentle sea cows — a starter page for Jacob to rewrite with checked facts.
+summary: Gentle marine mammals Jacob wants people to understand and protect — and the conservationists who showed him the work up close.
 species: Manatees
-featured: true
-order: 2
+featured: false
+order: 3
 ---
 
-Replace this placeholder with what you want people to know about manatees.
+Manatees are marine mammals, like dolphins. Jacob cares about them because of people who have spent their lives studying and helping them.
 
-Write only facts you have checked. Do not invent numbers, injury counts, or “save the species” claims you cannot source.
+In June 2024, when he was 11, he met [Jamal Galves](https://www.neaq.org/person/jamal-galves/), [Dr. James “Buddy” Powell](https://www.cmaquarium.org/manatee-rehabilitation-center/), and [Tanya Ward](https://www.cmaquarium.org/manatee-rehabilitation-center/) at Clearwater Marine Aquarium. Jamal was the same age when he first met Dr. Powell. That night is on the [meeting conservation heroes](/conservation/meeting-heroes) note, with photos from the evening.
 
-Ideas you might cover later:
+## What their work is about
 
-- Warm water and seagrass
-- Why propellers are dangerous
-- How people can watch manatees without crowding them
+CMA Research Institute’s [Belize manatee program](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) grew from field work Dr. Powell helped start in the 1990s. Jamal Galves, who began as an 11-year-old volunteer on those trips, now leads the Belize team. CMA describes the work as research, rescue, education, and stronger protection in places manatees live.
+
+In Florida, CMA’s [Dr. James “Buddy” Powell Manatee Rehabilitation Center](https://www.cmaquarium.org/manatee-rehabilitation-center/) gives rescued Florida manatees a place to finish recovering before some of them can go back to the wild. Tanya Ward manages that care. CMA is part of the Manatee Rescue & Rehabilitation Partnership. This page does not invent injury counts; CMA and [NOAA](https://www.fisheries.noaa.gov/species/west-indian-manatee) publish current guidance.
+
+## What people can do
+
+CMA’s manatee page lists practical steps such as slowing boats in manatee zones, watching for animals in the water, and reporting injured manatees through official rescue numbers — not through this site. Check those sources before repeating rules.

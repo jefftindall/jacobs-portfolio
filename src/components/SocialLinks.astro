@@ -1,0 +1,27 @@
+---
+import { socials } from '../lib/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+const links = [socials.soundcloud, socials.facebook];
+---
+
+<ul class:list={['flex flex-wrap gap-x-6 gap-y-2', className]}>
+  {
+    links.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          class="text-gel hover:text-spotlight"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {item.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>

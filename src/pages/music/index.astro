@@ -2,6 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GlassPanel from '../../components/GlassPanel.astro';
+import SoundCloudEmbed from '../../components/SoundCloudEmbed.astro';
+import CtaLink from '../../components/CtaLink.astro';
+import { soundcloud } from '../../lib/site';
 
 const items = (await getCollection('music')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
@@ -10,15 +13,34 @@ const items = (await getCollection('music')).sort(
 
 <BaseLayout
   title="Music"
-  description="Jacob Tindall’s piano and composition notes — pieces, practice, and performances."
+  description="Jacob Tindall’s piano and composition notes — original pieces on SoundCloud."
 >
   <section class="mx-auto max-w-6xl px-6 py-16 md:py-24">
     <p class="text-sm uppercase tracking-[0.2em] text-gold">Piano &amp; composition</p>
     <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Music</h1>
     <p class="mt-4 max-w-2xl text-muted">
-      Starter pages for piano and writing music. Swap in your own titles, stories, and recordings
-      when you have them.
+      Original piano pieces Jacob has written and recorded. Play them here, or open SoundCloud for
+      the full player.
     </p>
+    <div class="mt-10 overflow-hidden rounded-sm border border-line">
+      <SoundCloudEmbed />
+    </div>
+    <ul class="mt-6 space-y-2 text-spotlight/90">
+      {
+        soundcloud.tracks.map((track) => (
+          <li>
+            <a class="text-gel hover:text-spotlight" href={track.href} target="_blank" rel="noopener noreferrer">
+              {track.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-8">
+      <CtaLink href={soundcloud.href} variant="secondary" external>
+        Open SoundCloud
+      </CtaLink>
+    </div>
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {
         items.map((item) => (

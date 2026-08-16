@@ -6,12 +6,12 @@ import SectionHeader from '../components/SectionHeader.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import CtaLink from '../components/CtaLink.astro';
 import PostCard from '../components/PostCard.astro';
-import { site } from '../lib/site';
+import { site, socials } from '../lib/site';
 import { buildPersonJsonLd } from '../lib/personSchema';
 
-const conservation = (await getCollection('conservation')).sort(
-  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
-);
+const conservation = (await getCollection('conservation'))
+  .filter((item) => item.data.species)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 const music = (await getCollection('music')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
 );
@@ -50,7 +50,7 @@ const jsonLd = {
         <SectionHeader
           eyebrow="Passions"
           title="Two big loves"
-          support="Protecting marine mammals, and making music. Replace these starter notes with your own writing."
+          support="Protecting marine mammals, and making music — from a friendship with a rescue dolphin to piano pieces you can hear."
         />
       </div>
       <div class="mt-10 grid gap-6 md:grid-cols-2">
@@ -58,8 +58,7 @@ const jsonLd = {
           <p class="text-sm uppercase tracking-[0.2em] text-gel">Ocean</p>
           <h3 class="mt-3 font-display text-3xl text-spotlight">Conservation</h3>
           <p class="mt-3 text-muted">
-            Dolphins, manatees, and the work of keeping marine mammals safe. Starter pages are ready
-            for you to rewrite.
+            Dolphins, manatees, and the work of keeping marine mammals safe.
           </p>
           <ul class="mt-6 space-y-2 text-spotlight/90">
             {
@@ -80,7 +79,8 @@ const jsonLd = {
           <p class="text-sm uppercase tracking-[0.2em] text-gold">Sound</p>
           <h3 class="mt-3 font-display text-3xl text-spotlight">Music</h3>
           <p class="mt-3 text-muted">
-            Piano and composition — pieces, practice, and performances you want to share.
+            Piano and composition — original pieces such as Natures Wedding and Battle Cry in C
+            Minor, on SoundCloud.
           </p>
           <ul class="mt-6 space-y-2 text-spotlight/90">
             {
@@ -101,13 +101,62 @@ const jsonLd = {
     </div>
   </section>
 
+  <section class="section-y border-b border-line" aria-labelledby="listen-heading">
+    <div class="mx-auto max-w-6xl px-6">
+      <div id="listen-heading">
+        <SectionHeader
+          eyebrow="Listen & look"
+          title="Around the web"
+          support="Recordings, photos, and a news story from Clearwater Marine Aquarium summer camp."
+        />
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        <GlassPanel strong class="p-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-gold">Music</p>
+          <h3 class="mt-3 font-display text-2xl text-spotlight">SoundCloud</h3>
+          <p class="mt-3 text-muted">
+            Original piano pieces, including Natures Wedding, NASCAR, and Battle Cry in C Minor.
+          </p>
+          <div class="mt-8">
+            <CtaLink href={socials.soundcloud.href} variant="secondary" external>
+              Listen on SoundCloud
+            </CtaLink>
+          </div>
+        </GlassPanel>
+        <GlassPanel strong class="p-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-gel">Photos</p>
+          <h3 class="mt-3 font-display text-2xl text-spotlight">Facebook</h3>
+          <p class="mt-3 text-muted">
+            Pictures Jacob and a parent are comfortable sharing. This site does not copy other
+            people’s kids.
+          </p>
+          <div class="mt-8">
+            <CtaLink href={socials.facebook.href} variant="secondary" external>
+              Photos on Facebook
+            </CtaLink>
+          </div>
+        </GlassPanel>
+        <GlassPanel strong class="p-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-gel">Press</p>
+          <h3 class="mt-3 font-display text-2xl text-spotlight">Tampa Bay 28</h3>
+          <p class="mt-3 text-muted">
+            A story about Jacob’s friendship with Nicholas the dolphin at CMA summer camp.
+          </p>
+          <div class="mt-8">
+            <CtaLink href="/news/nicholas-clearwater" variant="secondary">Read the note</CtaLink>
+          </div>
+        </GlassPanel>
+      </div>
+    </div>
+  </section>
+
   <section class="section-y" aria-labelledby="news-heading">
     <div class="mx-auto max-w-6xl px-6">
       <div id="news-heading">
         <SectionHeader
           eyebrow="Journal"
           title="Latest notes"
-          support="Short updates you write over time."
+          support="Press, camp stories, and new recordings."
           href="/news"
           linkLabel="All news →"
         />
