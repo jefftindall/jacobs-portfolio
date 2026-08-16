@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { BRAND, conservationNotes, musicNotes, newestNewsPost } from '../helpers/content';
-import { expectMailto, isStaticWebAppHost, waitForOk, waitForRequestOk } from '../helpers/propagation';
+import { expectContactMailtoNotForm, isStaticWebAppHost, waitForOk, waitForRequestOk } from '../helpers/propagation';
 
 const conservation = conservationNotes();
 const music = musicNotes();
@@ -53,8 +53,7 @@ test.describe('public smoke', () => {
   test('contact is mailto, not a stored form', async ({ page }) => {
     await waitForOk(page, '/contact');
     await expect(page.getByRole('heading', { name: 'Contact', level: 1 })).toBeVisible();
-    await expect(page.locator('form')).toHaveCount(0);
-    expectMailto(await page.getByRole('link', { name: /@/ }).getAttribute('href'));
+    await expectContactMailtoNotForm(page);
   });
 
   test('robots.txt and sitemap are served', async ({ request }) => {

@@ -23,7 +23,7 @@ CI (`CI: static analysis`) stays the PR merge gate. Do not add Playwright to `np
 - Nav label/href change → `src/lib/nav.ts` (tests import this). Do not hard-code nav in specs.
 - Titles and slugs → read `src/content/` via `tests/helpers/content.ts`. Do not hard-code article titles.
 - Removed URL → 301 in both `staticwebapp.config.json` files, then drop or redirect the test.
-- Do not assert `SITE_CONTACT_EMAIL` or other secrets. Contact checks: `mailto:` exists and there is no visitor `<form>`.
+- Do not assert `SITE_CONTACT_EMAIL` or other secrets. Contact **today** is a `mailto:` link with no visitor `<form>` — use `a[href^="mailto:"]`, never match `@` in the link name. When a form is added, replace those assertions in the same change.
 - Privacy: no school, home address, gamertags, or other kids in fixtures or assertions.
 
 Local: `$env:BASE_URL="http://localhost:4321"; npm run test:smoke` (with `npm run preview`). `/api/health` is skipped off Azure.
