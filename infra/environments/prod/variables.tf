@@ -12,8 +12,8 @@ variable "location" {
 
 variable "custom_domain" {
   type        = string
-  description = "Production custom domain"
-  default     = ""
+  description = "Production custom domain (apex). Merging to main applies this via CD."
+  default     = "jaketindall.com"
 }
 
 variable "additional_auth_hostnames" {

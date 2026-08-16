@@ -66,6 +66,15 @@ resource "github_actions_environment_variable" "ga_measurement_id" {
   value         = var.ga_measurement_id
 }
 
+# Canonical public URL baked into Astro at build time (sitemap, OG, JSON-LD).
+resource "github_actions_environment_variable" "site_url" {
+  count         = var.manage_github_actions && var.custom_domain != "" ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "SITE_URL"
+  value         = "https://${var.custom_domain}"
+}
+
 # Deploy jobs read env-scoped API secrets from this vault (Gemini, ACS, etc.).
 # SITE-* / Turnstile are in bootstrap kv-jacob-shared (AZURE_SHARED_KEY_VAULT_NAME).
 resource "github_actions_environment_variable" "azure_key_vault_name" {
