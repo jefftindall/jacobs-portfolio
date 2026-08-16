@@ -143,7 +143,7 @@ jobs:
       always() &&
       needs.azure_ready.outputs.ready == 'true' &&
       needs.build_release.result == 'success' &&
-      (needs.terraform_staging.result == 'success' || needs.terraform_staging.result == 'skipped')
+      needs.terraform_staging.result == 'success'
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -239,7 +239,7 @@ jobs:
       always() &&
       needs.azure_ready.outputs.ready == 'true' &&
       needs.build_release.result == 'success' &&
-      (needs.terraform_prod.result == 'success' || needs.terraform_prod.result == 'skipped') &&
+      needs.terraform_prod.result == 'success' &&
       github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod

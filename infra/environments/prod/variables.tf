@@ -1,7 +1,7 @@
 variable "subscription_id" {
   type        = string
   description = "Azure subscription targeted by this Terraform stack"
-  default     = "e601e59a-c7f4-41f0-8178-b59740fb1974"
+  default     = "bf40ce12-d60e-4d58-8954-9f43445ca2af"
 }
 
 variable "location" {

@@ -1,5 +1,5 @@
 location        = "eastus2"
-subscription_id = "e601e59a-c7f4-41f0-8178-b59740fb1974"
+subscription_id = "bf40ce12-d60e-4d58-8954-9f43445ca2af"
 custom_domain   = ""
 
 # Azure-generated SWA hostname is registered automatically.

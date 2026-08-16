@@ -22,7 +22,7 @@ terraform {
 
   # Backend blocks cannot use variables; keep this in sync with var.subscription_id.
   backend "azurerm" {
-    subscription_id      = "e601e59a-c7f4-41f0-8178-b59740fb1974"
+    subscription_id      = "bf40ce12-d60e-4d58-8954-9f43445ca2af"
     resource_group_name  = "rg-jacob-tfstate"
     storage_account_name = "stjacobtfstateeu2"
     container_name       = "tfstate"

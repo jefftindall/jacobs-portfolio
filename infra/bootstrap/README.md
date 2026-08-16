@@ -14,7 +14,7 @@
 #   Shared ACS:        acs-jacob-shared + email-jacob-shared (one MailFrom / SMS number)
 #   Subscription budget: budget-jacob-portfolio-monthly (ceil(expected×1.25), currently $34/mo; ALERT-EMAIL at 80%/100%)
 #   Region:            eastus2
-#   Subscription:      e601e59a-c7f4-41f0-8178-b59740fb1974
+#   Subscription:      bf40ce12-d60e-4d58-8954-9f43445ca2af
 #   Entra app:         jacob-portfolio-gha-terraform (OIDC for plan/apply)
 #   Repo variables:    AZURE_TF_CLIENT_ID, AZURE_TF_TENANT_ID, AZURE_TF_SUBSCRIPTION_ID,
 #                      AZURE_SHARED_KEY_VAULT_NAME
