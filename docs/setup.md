@@ -46,7 +46,9 @@ When Jeff is ready:
 3. Apply `infra/environments/staging`, then `prod` (each grants its own GHA identity on `kv-jacob-shared`)
 4. Put `SITE-CONTACT-EMAIL` in `kv-jacob-shared` (not in git)
 5. Production custom domain (`jaketindall.com`): follow [`docs/runbooks/custom-domain.md`](runbooks/custom-domain.md) **before** merging a `custom_domain` change to `main` (CD applies prod Terraform)
-6. CD workflow (`.github/workflows/azure-static-web-apps.yml`) runs when GitHub OIDC vars exist
+6. CD workflow (`.github/workflows/azure-static-web-apps.yml`) deploys on merge to `main`. Terraform apply jobs run only when `infra/` changed; otherwise they skip. Staging must pass **Verify Staging** (Playwright smoke + journeys) before prod. See [`docs/runbooks/testing-strategy.md`](runbooks/testing-strategy.md).
+
+Merges to `main` go through a pull request. The **Protect main** ruleset requires CI jobs to pass; CI does not re-run on `main` after merge.
 
 Studio, Gemini, inquiry forms, Turnstile, and GA4 wait for a later phase.
 

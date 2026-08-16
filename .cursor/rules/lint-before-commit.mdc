@@ -11,13 +11,13 @@ Before creating a git commit (or opening/updating a PR with code changes), alway
 npm run lint
 ```
 
-That runs Terraform fmt/TFLint/validate, `astro check`, API `node --check`, and Actions secret-safety (same gates as `.github/workflows/static-analysis.yml`).
+That runs Terraform fmt/TFLint/validate, `astro check`, API `node --check`, and Actions secret-safety (same gates as `.github/workflows/static-analysis.yml`, which runs on pull requests to `main` only).
 
 ## Rules
 
 - Do **not** commit or push changes that fail `npm run lint`.
 - If you only touched infra, you may run `npm run lint:terraform` first, but still run the full `npm run lint` before the commit when feasible.
 - If a required tool is missing (`terraform`, `tflint`), install it or tell the user — do not skip the gate silently.
-- CI job names to keep green on PRs: **Terraform lint**, **Site check**, **API syntax**, **Actions secret-safety**. Terraform plan jobs run only when Azure OIDC vars exist.
+- CI job names to keep green on PRs: **Terraform lint**, **Site check**, **API syntax**, **Actions secret-safety**. Terraform plan jobs run only when Azure OIDC vars exist. Post-deploy Playwright is **CD**, not this lint gate — see [`.cursor/rules/post-deploy-tests.mdc`](post-deploy-tests.mdc).
 - When changing `.github/workflows/**`, scan `uses:` for Node.js 20 action runtimes and upgrade them before commit — see [`.cursor/rules/github-actions-node.mdc`](github-actions-node.mdc). Run `npm run lint:actions-secrets` (included in `npm run lint`).
 - **Never echo secrets** in pipelines or scripts — see [`.cursor/rules/never-echo-secrets.mdc`](never-echo-secrets.mdc).

@@ -1,7 +1,11 @@
 name: "CD: main"
 
-# Deploy only when Azure OIDC vars exist (after Jeff applies Terraform).
-# Until then this workflow succeeds by skipping deploy jobs.
+# Deploy on merge to main (or manual dispatch) when app or infra paths change.
+# PRs run CI: static analysis only — the Protect main ruleset is the merge gate.
+# After Deploy Staging: Verify Staging (smoke + journeys) must pass before prod.
+# After Deploy Production: Smoke Production confirms major landings on the public host.
+# Terraform apply runs only when infra/** changed; otherwise skipped.
+# Build once per release; staging and prod deploy the same artifact.
 on:
   push:
     branches:
@@ -18,26 +22,73 @@ permissions:
   actions: write
 
 jobs:
-  azure_ready:
-    name: Azure ready
+  changes:
+    name: Detect changes
     runs-on: ubuntu-latest
     outputs:
-      ready: ${{ steps.check.outputs.ready }}
+      infra: ${{ steps.outputs.outputs.infra }}
+      release: ${{ steps.outputs.outputs.release }}
+      prod: ${{ steps.outputs.outputs.prod }}
     steps:
-      - id: check
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            infra:
+              - 'infra/**'
+            app:
+              - 'src/**'
+              - 'public/**'
+              - 'api/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'astro.config.mjs'
+              - 'staticwebapp.config.json'
+              - 'tsconfig.json'
+              - 'tests/**'
+              - 'playwright.smoke.config.ts'
+              - 'playwright.journey.config.ts'
+              - '.github/workflows/azure-static-web-apps.yml'
+      - id: outputs
         run: |
-          if [ -n "${{ vars.AZURE_CLIENT_ID }}" ] && [ -n "${{ vars.AZURE_TF_CLIENT_ID }}" ]; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-            echo "Azure OIDC vars are present — CD jobs will run."
+          ON_MAIN=false
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            ON_MAIN=true
+          fi
+
+          INFRA="${{ steps.filter.outputs.infra }}"
+          APP="${{ steps.filter.outputs.app }}"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "infra=true" >> "$GITHUB_OUTPUT"
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            if [ "$ON_MAIN" = "true" ]; then
+              echo "prod=true" >> "$GITHUB_OUTPUT"
+              echo "Manual dispatch on main — running full CD including Terraform."
+            else
+              echo "prod=false" >> "$GITHUB_OUTPUT"
+              echo "Manual dispatch not on main — production stages skipped."
+            fi
+            exit 0
+          fi
+
+          echo "infra=$INFRA" >> "$GITHUB_OUTPUT"
+
+          if [ "$INFRA" = "true" ] || [ "$APP" = "true" ]; then
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            echo "prod=true" >> "$GITHUB_OUTPUT"
+            echo "App or infra changes — CD will deploy. Terraform: $INFRA"
           else
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "Azure OIDC vars are not set yet. Skipping CD (expected until Terraform is applied)."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "prod=false" >> "$GITHUB_OUTPUT"
+            echo "No app or infra changes — skipping CD jobs."
           fi
 
   terraform_staging:
     name: Terraform Apply Staging
-    needs: azure_ready
-    if: needs.azure_ready.outputs.ready == 'true'
+    needs: changes
+    if: needs.changes.outputs.infra == 'true'
     runs-on: ubuntu-latest
     environment: staging
     defaults:
@@ -87,8 +138,8 @@ jobs:
 
   build_release:
     name: Build release
-    needs: azure_ready
-    if: needs.azure_ready.outputs.ready == 'true'
+    needs: changes
+    if: needs.changes.outputs.release == 'true'
     runs-on: ubuntu-latest
     environment: prod
     env:
@@ -139,12 +190,13 @@ jobs:
 
   deploy_staging:
     name: Deploy Staging
-    needs: [azure_ready, terraform_staging, build_release]
+    needs: [changes, terraform_staging, build_release]
     if: |
       always() &&
-      needs.azure_ready.outputs.ready == 'true' &&
+      needs.changes.result == 'success' &&
+      needs.changes.outputs.release == 'true' &&
       needs.build_release.result == 'success' &&
-      needs.terraform_staging.result == 'success'
+      (needs.terraform_staging.result == 'success' || needs.terraform_staging.result == 'skipped')
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -182,14 +234,86 @@ jobs:
           api_location: "api"
           skip_app_build: true
 
-  terraform_prod:
-    name: Terraform Apply Production
-    needs: [azure_ready, deploy_staging]
+  verify_staging:
+    name: Verify Staging
+    needs: [changes, deploy_staging]
+    # always(): deploy_staging can succeed while terraform_staging is skipped; without
+    # always(), GitHub skips this job (and prod) for the whole dependency chain.
     if: |
       always() &&
-      needs.azure_ready.outputs.ready == 'true' &&
+      !cancelled() &&
+      needs.changes.result == 'success' &&
+      needs.deploy_staging.result == 'success'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve staging hostname
+        id: host
+        run: |
+          HOST=$(az staticwebapp show \
+            --name "${{ vars.AZURE_STATIC_WEB_APP_NAME }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --query defaultHostname -o tsv)
+          if [ -z "$HOST" ]; then
+            echo "::error::Could not resolve staging Static Web App hostname"
+            exit 1
+          fi
+          echo "hostname=$HOST" >> "$GITHUB_OUTPUT"
+          echo "Staging URL: https://$HOST"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run staging smoke (desktop + mobile)
+        env:
+          BASE_URL: https://${{ steps.host.outputs.hostname }}
+          CI: true
+        run: npm run test:smoke
+
+      - name: Run staging journeys (desktop + mobile)
+        env:
+          BASE_URL: https://${{ steps.host.outputs.hostname }}
+          CI: true
+        run: npm run test:journey
+
+      - name: Upload verify traces (failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: verify-staging-playwright
+          path: test-results
+          retention-days: 7
+          if-no-files-found: ignore
+
+  terraform_prod:
+    name: Terraform Apply Production
+    needs: [changes, deploy_staging, verify_staging]
+    if: |
+      always() &&
+      !cancelled() &&
+      needs.changes.outputs.prod == 'true' &&
+      needs.changes.outputs.release == 'true' &&
+      needs.changes.outputs.infra == 'true' &&
       needs.deploy_staging.result == 'success' &&
-      github.ref == 'refs/heads/main'
+      needs.verify_staging.result == 'success'
     runs-on: ubuntu-latest
     environment: prod
     defaults:
@@ -235,13 +359,15 @@ jobs:
 
   deploy_prod:
     name: Deploy Production
-    needs: [azure_ready, build_release, terraform_prod]
+    needs: [changes, build_release, terraform_prod, deploy_staging, verify_staging]
     if: |
       always() &&
-      needs.azure_ready.outputs.ready == 'true' &&
+      !cancelled() &&
+      needs.changes.outputs.prod == 'true' &&
+      needs.deploy_staging.result == 'success' &&
+      needs.verify_staging.result == 'success' &&
       needs.build_release.result == 'success' &&
-      needs.terraform_prod.result == 'success' &&
-      github.ref == 'refs/heads/main'
+      (needs.terraform_prod.result == 'success' || needs.terraform_prod.result == 'skipped')
     runs-on: ubuntu-latest
     environment: prod
     steps:
@@ -278,3 +404,84 @@ jobs:
           app_location: "dist"
           api_location: "api"
           skip_app_build: true
+
+  smoke_prod:
+    name: Smoke Production
+    needs: [deploy_prod]
+    if: always() && !cancelled() && needs.deploy_prod.result == 'success'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve production hostname
+        id: host
+        run: |
+          # Prefer the Portal "default" custom domain (apex). When a custom domain is
+          # set as default, the *.azurestaticapps.net host 301s to it.
+          # Note: JMESPath forbids ".(a || b)" after a dot (az --query fails to parse);
+          # pick with jq so flat CLI and nested ARM shapes both work.
+          SWA_NAME="${{ vars.AZURE_STATIC_WEB_APP_NAME }}"
+          SWA_RG="${{ vars.AZURE_RESOURCE_GROUP }}"
+          DEFAULT=$(az staticwebapp show \
+            --name "$SWA_NAME" \
+            --resource-group "$SWA_RG" \
+            --query defaultHostname -o tsv)
+          CUSTOM=$(az staticwebapp hostname list \
+            --name "$SWA_NAME" \
+            --resource-group "$SWA_RG" \
+            -o json | jq -r '
+              def domain: .domainName // .name // .properties.domainName // empty;
+              def ready_status: .status // .properties.status // empty;
+              def is_default: (.isDefault // .properties.isDefault // false) == true;
+              [ .[] | select(ready_status == "Ready") ] as $ready
+              | ($ready | map(select(is_default)) | .[0])
+                // ($ready | map(select((domain | ascii_downcase | startswith("www.") | not))) | .[0])
+                // $ready[0]
+                // empty
+              | if . == null then empty else domain end
+            ')
+          if [ "$CUSTOM" = "null" ] || [ "$CUSTOM" = "None" ]; then
+            CUSTOM=
+          fi
+          HOST=${CUSTOM:-$DEFAULT}
+          if [ -z "$HOST" ]; then
+            echo "::error::Could not resolve production Static Web App hostname"
+            exit 1
+          fi
+          echo "hostname=$HOST" >> "$GITHUB_OUTPUT"
+          echo "Production URL: https://$HOST (defaultHostname=$DEFAULT)"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run production smoke (desktop + mobile)
+        env:
+          BASE_URL: https://${{ steps.host.outputs.hostname }}
+          CI: true
+        run: npm run test:smoke
+
+      - name: Upload smoke traces (failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-prod-playwright
+          path: test-results
+          retention-days: 7
+          if-no-files-found: ignore

@@ -38,7 +38,7 @@ Run this before every commit. It checks Terraform, the Astro site, the API stub,
 
 Copy an existing `.md` file, change the title and body, save, and refresh the browser.
 
-**Work on a branch.** Jeff reviews and merges `main` before anything is public on the internet.
+**Work on a branch.** Open a pull request; Jeff reviews and merges `main`. CI is the PR gate. Direct pushes to `main` are blocked.
 
 ## Documentation
 
@@ -46,6 +46,7 @@ Copy an existing `.md` file, change the title and body, save, and refresh the br
 - [Initial setup](docs/setup.md) — local first; Azure later (do not apply unless Jeff asks)
 - [Custom domain](docs/runbooks/custom-domain.md) — bind `jaketindall.com` on prod (Jeff only)
 - [Brand & UI style guide](docs/style-guide.md) — tokens and type (visual: `/style-guide`)
+- [Testing strategy](docs/runbooks/testing-strategy.md) — post-deploy staging journeys and production smoke
 
 ## Security model (later)
 
