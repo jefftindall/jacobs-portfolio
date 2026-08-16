@@ -51,7 +51,17 @@ export async function waitForRequestOk(
   throw new Error(`Timed out waiting for ${path} (last: ${lastError || lastStatus})`);
 }
 
-export function expectMailto(href: string | null) {
-  expect(href, 'expected mailto link').toBeTruthy();
-  expect(href!).toMatch(/^mailto:/i);
+/**
+ * Today's contact page is a mailto link with no visitor form.
+ * Do not match on `@` in the accessible name — that is the secret address
+ * (and a Key Vault placeholder may not even contain `@`).
+ */
+export async function expectContactMailtoNotForm(page: Page) {
+  await expect(page.locator('form')).toHaveCount(0);
+  const mailto = page.locator('a[href^="mailto:"]');
+  await expect(mailto).toHaveCount(1);
+  const href = (await mailto.getAttribute('href')) ?? '';
+  if (!/^mailto:/i.test(href)) {
+    throw new Error('expected a mailto: contact link (no stored visitor form)');
+  }
 }

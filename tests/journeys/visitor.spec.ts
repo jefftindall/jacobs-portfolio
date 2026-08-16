@@ -7,7 +7,7 @@ import {
   newestNewsPost,
   primaryNav,
 } from '../helpers/content';
-import { expectMailto, waitForOk } from '../helpers/propagation';
+import { expectContactMailtoNotForm, waitForOk } from '../helpers/propagation';
 
 const conservation = conservationNotes();
 const music = musicNotes();
@@ -113,7 +113,7 @@ test.describe('visitor journeys', () => {
     await expect(page.getByRole('heading', { name: 'Privacy', level: 1 })).toBeVisible();
     await page.getByRole('link', { name: 'contact page' }).click();
     await expect(page).toHaveURL(/\/contact\/?$/);
-    expectMailto(await page.getByRole('link', { name: /@/ }).getAttribute('href'));
+    await expectContactMailtoNotForm(page);
 
     await page.goto('/music');
     await page.getByRole('contentinfo').getByRole('link', { name: 'Terms' }).click();
@@ -123,8 +123,7 @@ test.describe('visitor journeys', () => {
 
   test('VISIT-09 contact has no visitor form', async ({ page }) => {
     await waitForOk(page, '/contact');
-    await expect(page.locator('form')).toHaveCount(0);
     await expect(page.getByText(/parent-managed/i).first()).toBeVisible();
-    expectMailto(await page.getByRole('link', { name: /@/ }).getAttribute('href'));
+    await expectContactMailtoNotForm(page);
   });
 });

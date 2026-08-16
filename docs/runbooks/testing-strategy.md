@@ -47,7 +47,7 @@ Home (hero CTAs into conservation and music), conservation, music, about, galler
 | `VISIT-06` | Primary nav from home |
 | `VISIT-07` | Mobile menu → conservation (`@mobile`) |
 | `VISIT-08` | Footer privacy → contact; footer terms |
-| `VISIT-09` | Contact is parent-mediated mailto (no form) |
+| `VISIT-09` | Contact is parent-mediated `mailto:` (no form; do not assert the address) |
 | `J-SEO-01` | Title/canonical/description on landings; style-guide noindex and omitted from sitemap |
 
 ## Local
