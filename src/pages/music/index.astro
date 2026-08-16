@@ -44,7 +44,7 @@ const items = (await getCollection('music')).sort(
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {
         items.map((item) => (
-          <a href={`/music/${item.id}`}>
+          <a href={`/music/${item.id}`} aria-label={item.data.title}>
             <GlassPanel strong class="h-full p-8 transition hover:border-gold">
               <p class="text-sm uppercase tracking-[0.2em] text-gel">{item.data.kind}</p>
               <h2 class="mt-3 font-display text-3xl text-spotlight">{item.data.title}</h2>
