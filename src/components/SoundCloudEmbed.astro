@@ -1,0 +1,35 @@
+---
+import { soundcloud } from '../lib/site';
+
+interface Props {
+  /** SoundCloud profile or track URL. Defaults to Jacob’s profile. */
+  url?: string;
+  title?: string;
+  height?: number;
+}
+
+const {
+  url = soundcloud.href,
+  title = 'Jacob Tindall on SoundCloud',
+  height = 400,
+} = Astro.props;
+
+const src = new URL('https://w.soundcloud.com/player/');
+src.searchParams.set('url', url);
+src.searchParams.set('color', '#3d9b8f');
+src.searchParams.set('auto_play', 'false');
+src.searchParams.set('hide_related', 'true');
+src.searchParams.set('show_comments', 'false');
+src.searchParams.set('show_user', 'true');
+src.searchParams.set('show_reposts', 'false');
+src.searchParams.set('show_teaser', 'false');
+---
+
+<iframe
+  title={title}
+  class="w-full rounded-sm"
+  width="100%"
+  height={height}
+  loading="lazy"
+  allow="autoplay"
+  src={src.toString()}></iframe>

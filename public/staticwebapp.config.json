@@ -16,6 +16,16 @@
       "statusCode": 301
     },
     {
+      "route": "/news/welcome",
+      "redirect": "/news/nicholas-clearwater",
+      "statusCode": 301
+    },
+    {
+      "route": "/news/welcome/",
+      "redirect": "/news/nicholas-clearwater",
+      "statusCode": 301
+    },
+    {
       "route": "/conservation/",
       "redirect": "/conservation",
       "statusCode": 301

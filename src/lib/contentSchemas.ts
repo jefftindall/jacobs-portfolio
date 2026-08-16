@@ -5,6 +5,7 @@ export const conservationFrontmatterSchema = z.object({
   summary: z.string().min(1),
   species: z.string().optional(),
   image: z.string().optional(),
+  imageAlt: z.string().optional(),
   featured: z.boolean().default(false),
   order: z.number().optional(),
 });
@@ -35,6 +36,7 @@ export const galleryFrontmatterSchema = z.object({
   tags: z.array(z.string()).default([]),
   order: z.number().optional(),
   focus: z.string().default('center'),
+  aspect: z.enum(['video', 'portrait', 'square']).default('portrait'),
 });
 
 export const pagesFrontmatterSchema = z.object({

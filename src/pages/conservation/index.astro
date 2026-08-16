@@ -2,26 +2,59 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GlassPanel from '../../components/GlassPanel.astro';
+import OptimizedImg from '../../components/OptimizedImg.astro';
 
 const items = (await getCollection('conservation')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
 );
+const featured = items.find((item) => item.data.featured);
+const notes = items.filter((item) => !item.data.featured);
 ---
 
 <BaseLayout
   title="Conservation"
-  description="Jacob Tindall’s notes on marine mammal conservation — dolphins, manatees, and projects he cares about."
+  description="Jacob Tindall’s notes on marine mammal conservation — dolphins, manatees, and a featured story from Clearwater Marine Aquarium."
 >
   <section class="mx-auto max-w-6xl px-6 py-16 md:py-24">
     <p class="text-sm uppercase tracking-[0.2em] text-gel">Marine mammals</p>
     <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Conservation</h1>
     <p class="mt-4 max-w-2xl text-muted">
-      Starter pages about dolphins and manatees. Rewrite them with facts you have checked — do not
-      invent science.
+      Notes on dolphins and manatees, plus a featured story from Clearwater Marine Aquarium. Facts
+      are checked against trusted sources, or left out.
     </p>
+
+    {
+      featured && (
+        <a href={`/conservation/${featured.id}`} class="mt-12 block">
+          <GlassPanel strong class="overflow-hidden transition hover:border-gold">
+            <div class="grid md:grid-cols-2">
+              {featured.data.image && (
+                <OptimizedImg
+                  src={featured.data.image}
+                  alt={featured.data.imageAlt || featured.data.title}
+                  width={1080}
+                  height={1080}
+                  class="h-64 w-full object-cover md:h-full"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
+              )}
+              <div class="p-8 md:p-10">
+                <p class="text-sm uppercase tracking-[0.2em] text-gold">Featured story</p>
+                <h2 class="mt-3 font-display text-3xl text-spotlight md:text-4xl">
+                  {featured.data.title}
+                </h2>
+                <p class="mt-4 text-muted">{featured.data.summary}</p>
+                <p class="mt-8 text-sm text-gel">Read the story →</p>
+              </div>
+            </div>
+          </GlassPanel>
+        </a>
+      )
+    }
+
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {
-        items.map((item) => (
+        notes.map((item) => (
           <a href={`/conservation/${item.id}`}>
             <GlassPanel strong class="h-full p-8 transition hover:border-gold">
               {item.data.species && (

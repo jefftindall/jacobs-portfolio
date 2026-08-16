@@ -1,6 +1,7 @@
 ---
 import { site } from '../lib/site';
 import CtaLink from './CtaLink.astro';
+import SocialLinks from './SocialLinks.astro';
 
 interface Props {
   hideCta?: boolean;
@@ -42,7 +43,8 @@ const { hideCta = false } = Astro.props;
     class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted md:flex-row"
   >
     <p>© {new Date().getFullYear()} {site.name}</p>
-    <div class="flex flex-wrap justify-center gap-6">
+    <div class="flex flex-wrap items-center justify-center gap-6">
+      <SocialLinks />
       <a href="/gallery" class="hover:text-spotlight">Gallery</a>
       <a href="/privacy" class="hover:text-spotlight">Privacy</a>
       <a href="/terms" class="hover:text-spotlight">Terms</a>
