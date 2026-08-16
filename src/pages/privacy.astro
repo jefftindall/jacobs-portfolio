@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+const description = `Privacy policy for ${site.name}’s personal website. This site does not run analytics or inquiry forms.`;
+---
+
+<BaseLayout title="Privacy" description={description} hideFooterCta>
+  <section class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    <p class="text-sm uppercase tracking-[0.2em] text-gel">Legal</p>
+    <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Privacy</h1>
+    <p class="mt-4 text-muted">
+      How {site.name}’s site handles information. The public pages are a personal portfolio — not a
+      place that collects visitor accounts or comments.
+    </p>
+
+    <div class="prose-site mt-12">
+      <h2 id="overview">Overview</h2>
+      <p>
+        This website shares {site.name}’s interests in marine mammal conservation and music. We do
+        not sell personal information. We do not run advertising trackers on this site.
+      </p>
+
+      <h2 id="information-we-collect">Information we collect</h2>
+      <ul>
+        <li>
+          <strong>Email you choose to send.</strong> If you use the contact email, the message and
+          your address go to a parent-managed inbox so we can reply. Do not include extra personal
+          details that are not needed.
+        </li>
+        <li>
+          <strong>Technical data.</strong> Hosting providers may keep ordinary web logs (for example
+          timestamps and status codes) to keep the site running. We do not use that for advertising.
+        </li>
+      </ul>
+
+      <h2 id="what-we-do-not-collect">What we do not collect</h2>
+      <p>
+        This site does not have comment boxes, user accounts, chat, or analytics pixels in this
+        version. There is no contact form that stores submissions in the website files.
+      </p>
+
+      <h2 id="sharing">Sharing</h2>
+      <p>
+        Email you send is processed by our email provider so we can read and reply. We do not share
+        messages for marketing.
+      </p>
+
+      <h2 id="contact">Questions</h2>
+      <p>
+        Privacy questions can go to the same parent-managed address on the
+        <a href="/contact">contact page</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

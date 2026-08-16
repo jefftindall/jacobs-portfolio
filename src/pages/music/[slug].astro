@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('music');
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<BaseLayout
+  title={item.data.title}
+  description={item.data.summary}
+  canonicalPath={`/music/${item.id}`}
+>
+  <article class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    <p class="text-sm uppercase tracking-[0.2em] text-gel">{item.data.kind}</p>
+    <h1 class="mt-3 font-display text-4xl text-spotlight md:text-5xl">{item.data.title}</h1>
+    <p class="mt-4 text-lg text-muted">{item.data.summary}</p>
+    <div class="prose-site mt-10">
+      <Content />
+    </div>
+    <p class="mt-12">
+      <a href="/music" class="text-sm text-gel hover:text-spotlight">← All music</a>
+    </p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import { site } from '../lib/site';
+import CtaLink from './CtaLink.astro';
+
+interface Props {
+  support?: string;
+}
+
+const {
+  support = 'Dolphins, manatees, piano, and writing music — a personal site Jacob is building.',
+} = Astro.props;
+---
+
+<section class="relative min-h-[88vh] overflow-hidden" aria-labelledby="hero-heading">
+  <div class="absolute inset-0" aria-hidden="true">
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-ink via-stage to-panel"
+    >
+    </div>
+    <div
+      class="absolute -left-24 top-16 h-80 w-80 rounded-full bg-gel/20 blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-gold/10 blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/50"
+    >
+    </div>
+  </div>
+
+  <div class="relative mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-16 pt-28 md:pb-24 md:pt-32">
+    <div class="max-w-xl">
+      <p class="fade-up text-sm uppercase tracking-[0.25em] text-gold">
+        {site.jobTitle}
+      </p>
+      <h1
+        id="hero-heading"
+        class="fade-up-delay mt-4 font-display text-6xl leading-[0.92] text-spotlight md:text-7xl lg:text-8xl"
+      >
+        {site.name}
+      </h1>
+      <p class="fade-up-delay-2 mt-5 max-w-md text-lg text-spotlight/90">
+        {support}
+      </p>
+      <div class="fade-up-delay-2 mt-10 flex flex-wrap gap-4">
+        <CtaLink href="/conservation">Conservation</CtaLink>
+        <CtaLink href="/music" variant="secondary">Music</CtaLink>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,129 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import GlassPanel from '../components/GlassPanel.astro';
+import CtaLink from '../components/CtaLink.astro';
+import PostCard from '../components/PostCard.astro';
+import { site } from '../lib/site';
+import { buildPersonJsonLd } from '../lib/personSchema';
+
+const conservation = (await getCollection('conservation')).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+const music = (await getCollection('music')).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+const news = (await getCollection('news'))
+  .filter((n) => !n.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+
+const person = buildPersonJsonLd({
+  '@id': `${site.url}/#person`,
+});
+delete person['@context'];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    person,
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: site.url,
+      name: site.name,
+      description: site.description,
+      publisher: { '@id': `${site.url}/#person` },
+    },
+  ],
+};
+---
+
+<BaseLayout description={site.description} jsonLd={jsonLd} hideFooterCta>
+  <Hero />
+
+  <section class="section-y border-b border-line" aria-labelledby="passions-heading">
+    <div class="mx-auto max-w-6xl px-6">
+      <div id="passions-heading">
+        <SectionHeader
+          eyebrow="Passions"
+          title="Two big loves"
+          support="Protecting marine mammals, and making music. Replace these starter notes with your own writing."
+        />
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <GlassPanel strong class="p-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-gel">Ocean</p>
+          <h3 class="mt-3 font-display text-3xl text-spotlight">Conservation</h3>
+          <p class="mt-3 text-muted">
+            Dolphins, manatees, and the work of keeping marine mammals safe. Starter pages are ready
+            for you to rewrite.
+          </p>
+          <ul class="mt-6 space-y-2 text-spotlight/90">
+            {
+              conservation.slice(0, 3).map((item) => (
+                <li>
+                  <a class="text-gel hover:text-spotlight" href={`/conservation/${item.id}`}>
+                    {item.data.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-8">
+            <CtaLink href="/conservation">Explore conservation</CtaLink>
+          </div>
+        </GlassPanel>
+        <GlassPanel strong class="p-8">
+          <p class="text-sm uppercase tracking-[0.2em] text-gold">Sound</p>
+          <h3 class="mt-3 font-display text-3xl text-spotlight">Music</h3>
+          <p class="mt-3 text-muted">
+            Piano and composition — pieces, practice, and performances you want to share.
+          </p>
+          <ul class="mt-6 space-y-2 text-spotlight/90">
+            {
+              music.slice(0, 3).map((item) => (
+                <li>
+                  <a class="text-gel hover:text-spotlight" href={`/music/${item.id}`}>
+                    {item.data.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-8">
+            <CtaLink href="/music" variant="secondary">Explore music</CtaLink>
+          </div>
+        </GlassPanel>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-y" aria-labelledby="news-heading">
+    <div class="mx-auto max-w-6xl px-6">
+      <div id="news-heading">
+        <SectionHeader
+          eyebrow="Journal"
+          title="Latest notes"
+          support="Short updates you write over time."
+          href="/news"
+          linkLabel="All news →"
+        />
+      </div>
+      <div class="mt-6 max-w-3xl">
+        {
+          news.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              href={`/news/${post.id}`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

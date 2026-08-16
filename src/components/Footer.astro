@@ -1,0 +1,51 @@
+---
+import { site } from '../lib/site';
+import CtaLink from './CtaLink.astro';
+
+interface Props {
+  hideCta?: boolean;
+}
+const { hideCta = false } = Astro.props;
+---
+
+<footer class="mt-16 border-t border-line md:mt-24">
+  {
+    !hideCta && (
+      <div class="mx-auto max-w-6xl px-6 py-16 text-center">
+        <h2 class="font-display text-3xl text-spotlight md:text-4xl">Say hello</h2>
+        <p class="mx-auto mt-3 max-w-xl text-muted">
+          Questions about conservation, music, or this site? Reach out through the contact page.
+        </p>
+        <div class="mt-8 flex flex-nowrap justify-center gap-2 sm:gap-4">
+          <CtaLink class="shrink-0 whitespace-nowrap !px-3 sm:!px-6" href="/conservation">
+            Conservation
+          </CtaLink>
+          <CtaLink
+            class="shrink-0 whitespace-nowrap !px-3 sm:!px-6"
+            href="/music"
+            variant="secondary"
+          >
+            Music
+          </CtaLink>
+          <CtaLink
+            class="shrink-0 whitespace-nowrap !px-3 sm:!px-6"
+            href="/contact"
+            variant="secondary"
+          >
+            Contact
+          </CtaLink>
+        </div>
+      </div>
+    )
+  }
+  <div
+    class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted md:flex-row"
+  >
+    <p>© {new Date().getFullYear()} {site.name}</p>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a href="/gallery" class="hover:text-spotlight">Gallery</a>
+      <a href="/privacy" class="hover:text-spotlight">Privacy</a>
+      <a href="/terms" class="hover:text-spotlight">Terms</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,77 @@
+# GitHub Actions environments + OIDC variables (managed when var.manage_github_actions is true).
+# Requires the root module to configure the integrations/github provider (GITHUB_TOKEN / GH_TOKEN).
+# The GitHub App used by Studio is created once in the GitHub UI — Terraform cannot create Apps.
+
+resource "github_repository_environment" "this" {
+  count       = var.manage_github_actions ? 1 : 0
+  environment = var.environment
+  repository  = var.github_repo
+}
+
+resource "github_actions_environment_variable" "azure_client_id" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_CLIENT_ID"
+  value         = azuread_application.github_actions.client_id
+}
+
+resource "github_actions_environment_variable" "azure_tenant_id" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_TENANT_ID"
+  value         = data.azurerm_client_config.current.tenant_id
+}
+
+resource "github_actions_environment_variable" "azure_subscription_id" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_SUBSCRIPTION_ID"
+  value         = data.azurerm_client_config.current.subscription_id
+}
+
+resource "github_actions_environment_variable" "azure_resource_group" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_RESOURCE_GROUP"
+  value         = azurerm_resource_group.main.name
+}
+
+resource "github_actions_environment_variable" "azure_static_web_app_name" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_STATIC_WEB_APP_NAME"
+  value         = azurerm_static_web_app.main.name
+}
+
+# Public-by-design: also embedded in the Astro client bundle for the browser SDK.
+resource "github_actions_environment_variable" "appinsights_connection_string" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "APPINSIGHTS_CONNECTION_STRING"
+  value         = azurerm_application_insights.main.connection_string
+}
+
+# Optional GA4 Measurement ID — skip until analytics is enabled.
+resource "github_actions_environment_variable" "ga_measurement_id" {
+  count         = var.manage_github_actions && var.ga_measurement_id != "" ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "GA_MEASUREMENT_ID"
+  value         = var.ga_measurement_id
+}
+
+# Deploy jobs read env-scoped API secrets from this vault (Gemini, ACS, etc.).
+# SITE-* / Turnstile are in bootstrap kv-jacob-shared (AZURE_SHARED_KEY_VAULT_NAME).
+resource "github_actions_environment_variable" "azure_key_vault_name" {
+  count         = var.manage_github_actions ? 1 : 0
+  environment   = github_repository_environment.this[0].environment
+  repository    = var.github_repo
+  variable_name = "AZURE_KEY_VAULT_NAME"
+  value         = azurerm_key_vault.main.name
+}

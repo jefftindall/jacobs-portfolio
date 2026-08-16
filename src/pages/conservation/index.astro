@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GlassPanel from '../../components/GlassPanel.astro';
+
+const items = (await getCollection('conservation')).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+---
+
+<BaseLayout
+  title="Conservation"
+  description="Jacob Tindall’s notes on marine mammal conservation — dolphins, manatees, and projects he cares about."
+>
+  <section class="mx-auto max-w-6xl px-6 py-16 md:py-24">
+    <p class="text-sm uppercase tracking-[0.2em] text-gel">Marine mammals</p>
+    <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Conservation</h1>
+    <p class="mt-4 max-w-2xl text-muted">
+      Starter pages about dolphins and manatees. Rewrite them with facts you have checked — do not
+      invent science.
+    </p>
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      {
+        items.map((item) => (
+          <a href={`/conservation/${item.id}`}>
+            <GlassPanel strong class="h-full p-8 transition hover:border-gold">
+              {item.data.species && (
+                <p class="text-sm uppercase tracking-[0.2em] text-gel">{item.data.species}</p>
+              )}
+              <h2 class="mt-3 font-display text-3xl text-spotlight">{item.data.title}</h2>
+              <p class="mt-3 text-muted">{item.data.summary}</p>
+            </GlassPanel>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

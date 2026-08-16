@@ -1,0 +1,32 @@
+---
+description: Privacy rules for Jacob’s public site — never publish personal details
+alwaysApply: true
+---
+
+# Kid privacy (always)
+
+Jacob is a minor. This public site must stay free of identifying details beyond the approved brand name **Jacob Tindall**.
+
+## Never add to the site, git, or commit messages
+
+- School name, grade, teachers, or class schedules
+- Home address, neighborhood, or exact location
+- Phone numbers, family emails, or dates of birth
+- Friends’ names, photos of other minors, or family photos without parent approval
+- Gamertags, Xbox/PSN/Epic IDs, Discord, or friend lists
+- Travel plans, “I will be at…”, or live location
+
+Fortnite and Minecraft may be mentioned as hobbies **without** account names.
+
+## Do not add these features unless Jeff explicitly asks
+
+- Comment systems, chat, user accounts, or visitor sign-in
+- Contact forms that store submissions
+- Analytics, ads, or tracking pixels
+- Maps that pin a home or school
+
+Contact stays a **mailto** to `SITE_CONTACT_EMAIL` from `.env` (parent-managed). Never commit the real email.
+
+## Photos
+
+Only images Jacob and a parent are comfortable sharing, under `public/images/`. No other people’s kids.

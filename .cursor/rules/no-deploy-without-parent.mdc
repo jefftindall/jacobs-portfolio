@@ -1,0 +1,24 @@
+---
+description: Do not deploy Azure or enable production CD unless Jeff asks
+alwaysApply: true
+---
+
+# No deploy without parent
+
+Jacob builds locally with Cursor. Jeff owns Azure, secrets, and production.
+
+## Do not do unless Jeff explicitly asks in this conversation
+
+- `terraform apply`, `terraform destroy`, or Azure CLI resource creates
+- Push deploy tokens, Key Vault secret values, or GitHub App keys
+- Turn on un-gated production CD
+- Register custom domains or Entra apps
+
+## Default workflow
+
+- Edit pages and markdown
+- Run `npm run dev` (port 4321)
+- Run `npm run lint` before commits
+- Work on a branch; Jeff reviews `main`
+
+Local `npm run build` is fine. Publishing to the live internet is Jeff’s job.

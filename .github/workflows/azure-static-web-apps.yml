@@ -1,0 +1,279 @@
+name: "CD: main"
+
+# Deploy only when Azure OIDC vars exist (after Jeff applies Terraform).
+# Until then this workflow succeeds by skipping deploy jobs.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: portfolio-cd
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+  actions: write
+
+jobs:
+  azure_ready:
+    name: Azure ready
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ vars.AZURE_CLIENT_ID }}" ] && [ -n "${{ vars.AZURE_TF_CLIENT_ID }}" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "Azure OIDC vars are present — CD jobs will run."
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Azure OIDC vars are not set yet. Skipping CD (expected until Terraform is applied)."
+          fi
+
+  terraform_staging:
+    name: Terraform Apply Staging
+    needs: azure_ready
+    if: needs.azure_ready.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: infra/environments/staging
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Azure login (Terraform OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_TF_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TF_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_TF_SUBSCRIPTION_ID }}
+
+      - name: Require TF_GITHUB_TOKEN
+        env:
+          TF_GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$TF_GITHUB_TOKEN" ]; then
+            echo "::error::Add repository secret TF_GITHUB_TOKEN."
+            exit 1
+          fi
+
+      - name: Terraform init
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: terraform init -input=false
+
+      - name: Terraform plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform apply
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: terraform apply -input=false tfplan
+
+  build_release:
+    name: Build release
+    needs: azure_ready
+    if: needs.azure_ready.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Fetch contact email from shared Key Vault
+        env:
+          AZURE_SHARED_KEY_VAULT_NAME: ${{ vars.AZURE_SHARED_KEY_VAULT_NAME }}
+        run: |
+          set -euo pipefail
+          EMAIL=$(az keyvault secret show --vault-name "$AZURE_SHARED_KEY_VAULT_NAME" --name SITE-CONTACT-EMAIL --query value -o tsv)
+          echo "::add-mask::$EMAIL"
+          echo "SITE_CONTACT_EMAIL=$EMAIL" >> "$GITHUB_ENV"
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install API dependencies
+        run: npm ci --prefix api
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ github.sha }}
+          path: |
+            dist
+            api
+          retention-days: 1
+          if-no-files-found: error
+
+  deploy_staging:
+    name: Deploy Staging
+    needs: [azure_ready, terraform_staging, build_release]
+    if: |
+      always() &&
+      needs.azure_ready.outputs.ready == 'true' &&
+      needs.build_release.result == 'success' &&
+      (needs.terraform_staging.result == 'success' || needs.terraform_staging.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: release-${{ github.sha }}
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve Static Web Apps deploy token
+        id: swa
+        run: |
+          TOKEN=$(az staticwebapp secrets list \
+            --name "${{ vars.AZURE_STATIC_WEB_APP_NAME }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --query "properties.apiKey" -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "api_key=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to staging
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.swa.outputs.api_key }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: "dist"
+          api_location: "api"
+          skip_app_build: true
+
+  terraform_prod:
+    name: Terraform Apply Production
+    needs: [azure_ready, deploy_staging]
+    if: |
+      always() &&
+      needs.azure_ready.outputs.ready == 'true' &&
+      needs.deploy_staging.result == 'success' &&
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+    defaults:
+      run:
+        working-directory: infra/environments/prod
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Azure login (Terraform OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_TF_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TF_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_TF_SUBSCRIPTION_ID }}
+
+      - name: Require TF_GITHUB_TOKEN
+        env:
+          TF_GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$TF_GITHUB_TOKEN" ]; then
+            echo "::error::Add repository secret TF_GITHUB_TOKEN."
+            exit 1
+          fi
+
+      - name: Terraform init
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: terraform init -input=false
+
+      - name: Terraform apply
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: |
+          terraform plan -input=false -out=tfplan
+          terraform apply -input=false tfplan
+
+  deploy_prod:
+    name: Deploy Production
+    needs: [azure_ready, build_release, terraform_prod]
+    if: |
+      always() &&
+      needs.azure_ready.outputs.ready == 'true' &&
+      needs.build_release.result == 'success' &&
+      (needs.terraform_prod.result == 'success' || needs.terraform_prod.result == 'skipped') &&
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: release-${{ github.sha }}
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve Static Web Apps deploy token
+        id: swa
+        run: |
+          TOKEN=$(az staticwebapp secrets list \
+            --name "${{ vars.AZURE_STATIC_WEB_APP_NAME }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --query "properties.apiKey" -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "api_key=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to production
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.swa.outputs.api_key }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: "dist"
+          api_location: "api"
+          skip_app_build: true

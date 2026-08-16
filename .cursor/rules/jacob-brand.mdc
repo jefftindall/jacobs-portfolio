@@ -1,0 +1,22 @@
+---
+description: Jacob Tindall brand — conservation and music, not theatre
+alwaysApply: true
+---
+
+# Jacob’s brand
+
+Jacob Tindall’s site is about **marine mammal conservation** (especially dolphins and manatees) and **music** (piano and composition).
+
+## Do
+
+- Keep the ocean + music visual system (navy, seafoam, sand) in `src/styles/global.css`
+- Put conservation notes in `src/content/conservation/` and music notes in `src/content/music/`
+- Mark starter copy clearly so Jacob can replace it
+- Check conservation facts or say they are unverified — do not invent science, injury counts, or organization quotes
+
+## Do not
+
+- Copy Elyse’s theatre, lessons, casting, resume, or Broadway framing
+- Lead with age or “teen influencer” copy
+- Add professional booking, paid lessons, or casting materials
+- Treat games as the main brand (they are spare-time hobbies only)

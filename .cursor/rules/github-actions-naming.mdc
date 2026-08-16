@@ -1,0 +1,15 @@
+---
+description: Follow Scheme A for GitHub Actions workflow names
+globs: .github/workflows/**/*
+alwaysApply: true
+---
+
+# GitHub Actions naming (Scheme A)
+
+When adding or editing workflows under `.github/workflows/`:
+
+1. Follow **Scheme A** in [`docs/runbooks/github-actions-naming.md`](docs/runbooks/github-actions-naming.md).
+2. Display `name:` must be `"<Area>: <purpose>"` with Area in `{CI, CD, Ops, Search, Maint}`.
+3. New workflow **filenames** should use `<area>-<purpose>[-cadence].yml` (`ci-`, `cd-`, `ops-`, `search-`, `maint-`).
+4. Keep plan IDs out of the workflow display `name:`; put them in comments/docs.
+5. Never add a ghost `terraform.yml` workflow — lint/plan live in `CI: static analysis`.

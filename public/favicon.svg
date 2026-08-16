@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="8" fill="#06141c"/>
+  <defs>
+    <linearGradient id="wave" x1="8" y1="48" x2="56" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3d9b8f"/>
+      <stop offset="1" stop-color="#d4b483"/>
+    </linearGradient>
+  </defs>
+  <path fill="#0a2230" d="M0 36c8 8 16-4 24 0s16 10 24 4 8-10 16-6v30H0V36z"/>
+  <path fill="url(#wave)" d="M4 44c10 6 14-6 24-2s14 8 22 2c6-4 10-2 10-2v8H4v-6z" opacity="0.85"/>
+  <path fill="#e7f3f0" d="M18 28c8-10 22-8 28 2 1 2-1 3-3 2-5-6-15-8-22-1-2 1-4 0-3-3z"/>
+  <circle cx="42" cy="27" r="1.6" fill="#06141c"/>
+</svg>

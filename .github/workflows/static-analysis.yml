@@ -1,0 +1,192 @@
+name: "CI: static analysis"
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  terraform_lint:
+    name: Terraform lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: latest
+
+      - name: Cache TFLint plugins
+        uses: actions/cache@v6
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('infra/.tflint.hcl') }}
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive infra
+
+      - name: TFLint init
+        working-directory: infra
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: tflint --init
+
+      - name: TFLint
+        working-directory: infra
+        run: tflint --recursive --format compact
+
+      - name: Terraform validate
+        run: |
+          set -euo pipefail
+          for dir in infra/bootstrap infra/environments/staging infra/environments/prod; do
+            echo "::group::validate ${dir}"
+            (
+              cd "$dir"
+              terraform init -backend=false -input=false
+              terraform validate
+            )
+            echo "::endgroup::"
+          done
+
+  site:
+    name: Site check
+    runs-on: ubuntu-latest
+    env:
+      SITE_CONTACT_EMAIL: check@example.com
+      SITE_URL: http://localhost:4321
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install and check
+        run: |
+          npm ci
+          npm run check
+
+  api:
+    name: API syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Syntax check
+        run: npm run lint:api
+
+  actions_secrets:
+    name: Actions secret-safety
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Check workflows for secret-leak anti-patterns
+        run: npm run lint:actions-secrets
+
+  changes:
+    name: Detect infra changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      infra: ${{ steps.filter.outputs.infra }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            infra:
+              - 'infra/**'
+              - '.github/workflows/static-analysis.yml'
+
+  plan:
+    name: Plan ${{ matrix.environment }}
+    needs: [terraform_lint, site, api, changes]
+    if: |
+      github.event_name == 'pull_request' &&
+      needs.changes.outputs.infra == 'true' &&
+      vars.AZURE_TF_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [staging, prod]
+    defaults:
+      run:
+        working-directory: infra/environments/${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Azure login (Terraform OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_TF_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TF_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_TF_SUBSCRIPTION_ID }}
+
+      - name: Require TF_GITHUB_TOKEN
+        env:
+          TF_GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$TF_GITHUB_TOKEN" ]; then
+            echo "::error::Add repository secret TF_GITHUB_TOKEN (a PAT that can read/write Actions environment variables). The default GITHUB_TOKEN cannot manage environment variables."
+            exit 1
+          fi
+
+      - name: Terraform init
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: terraform init -input=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          terraform plan -input=false -lock=false -no-color -out=tfplan
+          terraform show -no-color tfplan > plan.txt
+          {
+            echo "## Terraform plan (${{ matrix.environment }})"
+            echo '```'
+            head -c 60000 plan.txt
+            echo
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

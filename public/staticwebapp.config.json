@@ -1,0 +1,60 @@
+{
+  "routes": [
+    {
+      "route": "/about/",
+      "redirect": "/about",
+      "statusCode": 301
+    },
+    {
+      "route": "/contact/",
+      "redirect": "/contact",
+      "statusCode": 301
+    },
+    {
+      "route": "/news/",
+      "redirect": "/news",
+      "statusCode": 301
+    },
+    {
+      "route": "/conservation/",
+      "redirect": "/conservation",
+      "statusCode": 301
+    },
+    {
+      "route": "/music/",
+      "redirect": "/music",
+      "statusCode": 301
+    },
+    {
+      "route": "/gallery/",
+      "redirect": "/gallery",
+      "statusCode": 301
+    },
+    {
+      "route": "/_astro/*",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/images/*",
+      "headers": {
+        "Cache-Control": "public, max-age=604800"
+      }
+    },
+    {
+      "route": "/api/*",
+      "headers": {
+        "Cache-Control": "private, no-store"
+      }
+    }
+  ],
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Cache-Control": "public, must-revalidate, max-age=30"
+  },
+  "platform": {
+    "apiRuntime": "node:20"
+  }
+}

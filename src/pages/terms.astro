@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+const description = `Terms for using ${site.name}’s personal website.`;
+---
+
+<BaseLayout title="Terms" description={description} hideFooterCta>
+  <section class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    <p class="text-sm uppercase tracking-[0.2em] text-gel">Legal</p>
+    <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Terms &amp; conditions</h1>
+    <p class="mt-4 text-muted">
+      Rules for using {site.name}’s website. By using this site, you agree to these terms.
+    </p>
+
+    <div class="prose-site mt-12">
+      <h2 id="acceptance">Acceptance</h2>
+      <p>
+        If you do not agree, please do not use the site. We may update these terms; the version
+        posted here is the current one.
+      </p>
+
+      <h2 id="site-purpose">Site purpose</h2>
+      <p>
+        This website presents {site.name}’s interests in marine mammal conservation and music. It is
+        a personal site, not a store, school portal, or professional booking service.
+      </p>
+
+      <h2 id="content">Content</h2>
+      <p>
+        Photos, writing, and other content on this site are owned by {site.name} or used with
+        permission. You may view them. You may not copy, redistribute, or train AI systems on site
+        content without prior written permission.
+      </p>
+
+      <h2 id="contact">Contact</h2>
+      <p>
+        Email on the contact page is for genuine messages. Do not send spam or abusive content.
+        Sending a message does not create any obligation to reply.
+      </p>
+
+      <h2 id="disclaimer">Disclaimer</h2>
+      <p>
+        Conservation notes on this site are for learning and sharing interest. They are not
+        professional scientific, medical, or legal advice. Check facts with trusted sources before
+        repeating them.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

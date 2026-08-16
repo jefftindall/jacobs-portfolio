@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('conservation');
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<BaseLayout
+  title={item.data.title}
+  description={item.data.summary}
+  canonicalPath={`/conservation/${item.id}`}
+>
+  <article class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    {
+      item.data.species && (
+        <p class="text-sm uppercase tracking-[0.2em] text-gel">{item.data.species}</p>
+      )
+    }
+    <h1 class="mt-3 font-display text-4xl text-spotlight md:text-5xl">{item.data.title}</h1>
+    <p class="mt-4 text-lg text-muted">{item.data.summary}</p>
+    <div class="prose-site mt-10">
+      <Content />
+    </div>
+    <p class="mt-12">
+      <a href="/conservation" class="text-sm text-gel hover:text-spotlight">← All conservation</a>
+    </p>
+  </article>
+</BaseLayout>

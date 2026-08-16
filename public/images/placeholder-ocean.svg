@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1280" fill="none">
+  <rect width="960" height="1280" fill="#0a2230"/>
+  <circle cx="720" cy="280" r="180" fill="#3d9b8f" opacity="0.25"/>
+  <circle cx="200" cy="980" r="240" fill="#d4b483" opacity="0.12"/>
+  <path fill="#3d9b8f" opacity="0.45" d="M0 820c120 80 220-40 360 10s260 120 400 20 140-80 200-20v450H0V820z"/>
+  <text x="480" y="640" text-anchor="middle" fill="#e7f3f0" font-size="36" font-family="Georgia, serif">Add a photo here</text>
+</svg>

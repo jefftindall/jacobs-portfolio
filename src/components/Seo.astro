@@ -1,0 +1,78 @@
+---
+import { site } from '../lib/site';
+import { buildPersonJsonLd } from '../lib/personSchema';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalPath: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noIndex?: boolean;
+}
+
+const { title, description, image, canonicalPath, jsonLd, noIndex = false } = Astro.props;
+const normalizedPath =
+  canonicalPath.length > 1 && canonicalPath.endsWith('/')
+    ? canonicalPath.slice(0, -1)
+    : canonicalPath;
+const canonical = new URL(normalizedPath, site.url).href;
+const ogImage = image ? new URL(image, site.url).href : undefined;
+
+const defaultPerson = buildPersonJsonLd();
+
+function isPersonType(type: unknown): boolean {
+  if (type === 'Person') return true;
+  return Array.isArray(type) && type.includes('Person');
+}
+
+function hasTopLevelPerson(nodes: Record<string, unknown>[]): boolean {
+  for (const node of nodes) {
+    if (isPersonType(node['@type'])) return true;
+    const graph = node['@graph'];
+    if (Array.isArray(graph)) {
+      for (const entry of graph) {
+        if (
+          entry &&
+          typeof entry === 'object' &&
+          isPersonType((entry as Record<string, unknown>)['@type'])
+        ) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+const customNodes = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const structured =
+  customNodes.length === 0
+    ? [defaultPerson]
+    : hasTopLevelPerson(customNodes)
+      ? customNodes
+      : [defaultPerson, ...customNodes];
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+<meta property="og:site_name" content={site.name} />
+
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImage && <meta name="twitter:image" content={ogImage} />}
+
+{
+  structured.map((item) => (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(item)} />
+  ))
+}

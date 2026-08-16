@@ -1,0 +1,61 @@
+---
+import { nav, site } from '../lib/site';
+const pathname = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-ink/70 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+    <a
+      href="/"
+      class="inline-flex items-center gap-1.5 font-display text-2xl tracking-tight text-spotlight md:gap-2 md:text-3xl"
+    >
+      <img
+        src="/favicon.svg"
+        alt=""
+        width="32"
+        height="32"
+        class="size-7 shrink-0 rounded-sm md:size-8"
+        decoding="async"
+      />
+      {site.name}
+    </a>
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Primary">
+      {
+        nav.map((item) => {
+          const active = pathname === item.href || pathname.startsWith(item.href + '/');
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                'text-sm transition',
+                active ? 'text-gold' : 'text-muted hover:text-spotlight',
+              ]}
+              aria-current={active ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+    <details class="relative md:hidden">
+      <summary
+        class="min-h-11 cursor-pointer list-none rounded-sm border border-line px-3 py-2 text-sm text-spotlight"
+      >
+        Menu
+      </summary>
+      <div class="glass-panel-strong absolute right-0 mt-2 w-52 rounded-sm p-2 shadow-xl">
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              class="block min-h-11 rounded-sm px-3 py-2 text-sm text-muted hover:bg-stage hover:text-spotlight"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+    </details>
+  </div>
+</header>

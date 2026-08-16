@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CtaLink from '../components/CtaLink.astro';
+import GlassPanel from '../components/GlassPanel.astro';
+import { site } from '../lib/site';
+
+const colors = [
+  { name: 'ink', value: '#06141c', swatch: 'bg-ink', note: 'Page base' },
+  { name: 'stage', value: '#0a2230', swatch: 'bg-stage', note: 'Depth / hover' },
+  { name: 'panel', value: '#0f2f40', swatch: 'bg-panel', note: 'Solid surfaces' },
+  { name: 'spotlight', value: '#e7f3f0', swatch: 'bg-spotlight', note: 'Primary text' },
+  { name: 'muted', value: '#8fb0b8', swatch: 'bg-muted', note: 'Secondary text' },
+  { name: 'gold', value: '#d4b483', swatch: 'bg-gold', note: 'Sand accent / CTA' },
+  { name: 'gel', value: '#3d9b8f', swatch: 'bg-gel', note: 'Seafoam / links' },
+];
+---
+
+<BaseLayout
+  title="Style guide"
+  description="Brand and UI style guide for Jacob Tindall’s site."
+  hideFooterCta
+  noIndex
+>
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16 md:py-20">
+      <p class="text-sm uppercase tracking-[0.25em] text-gel">Internal reference</p>
+      <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Style guide</h1>
+      <p class="mt-4 max-w-2xl text-muted">
+        Visual system for {site.name} — {site.jobTitle}. Tokens from
+        <code class="text-gold">src/styles/global.css</code>; written rules in
+        <code class="text-gold">docs/style-guide.md</code>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-y border-b border-line" id="brand">
+    <div class="mx-auto max-w-6xl px-6">
+      <SectionHeader
+        eyebrow="Brand"
+        title="Positioning"
+        support="Ocean and music — not a theatre portfolio."
+      />
+      <dl class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <dt class="text-sm uppercase tracking-[0.2em] text-gel">Name</dt>
+          <dd class="mt-2 font-display text-3xl text-spotlight">{site.name}</dd>
+        </div>
+        <div>
+          <dt class="text-sm uppercase tracking-[0.2em] text-gel">Role</dt>
+          <dd class="mt-2 text-lg text-spotlight">{site.jobTitle}</dd>
+        </div>
+        <div>
+          <dt class="text-sm uppercase tracking-[0.2em] text-gel">Tagline</dt>
+          <dd class="mt-2 text-lg text-muted">{site.tagline}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-y border-b border-line" id="color">
+    <div class="mx-auto max-w-6xl px-6">
+      <SectionHeader
+        eyebrow="Color"
+        title="Palette"
+        support="Deep ocean navy with seafoam and sand — music warmth without Broadway gold-on-stage."
+      />
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          colors.map((c) => (
+            <div class="overflow-hidden rounded-sm border border-line">
+              <div class:list={['h-24', c.swatch]}></div>
+              <div class="bg-panel/80 p-4">
+                <p class="font-display text-xl text-spotlight">{c.name}</p>
+                <p class="mt-1 font-mono text-xs text-muted">{c.value}</p>
+                <p class="mt-2 text-sm text-muted">{c.note}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-y" id="components">
+    <div class="mx-auto max-w-6xl px-6">
+      <SectionHeader eyebrow="UI" title="Components" support="Primary actions use sand on ink." />
+      <div class="mt-10 flex flex-wrap gap-4">
+        <CtaLink href="/conservation">Primary</CtaLink>
+        <CtaLink href="/music" variant="secondary">Secondary</CtaLink>
+        <CtaLink href="/contact" variant="gel">Seafoam</CtaLink>
+      </div>
+      <GlassPanel class="mt-10 p-6" strong>
+        <p class="text-spotlight">Glass panel example for featured notes.</p>
+        <p class="mt-2 text-muted">Keep one idea per panel.</p>
+      </GlassPanel>
+    </div>
+  </section>
+</BaseLayout>

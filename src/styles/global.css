@@ -1,0 +1,143 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/source-sans-3";
+
+@theme {
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-sans: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
+
+  --color-ink: #06141c;
+  --color-stage: #0a2230;
+  --color-panel: #0f2f40;
+  --color-spotlight: #e7f3f0;
+  --color-muted: #8fb0b8;
+  --color-gold: #d4b483;
+  --color-gel: #3d9b8f;
+  --color-line: rgba(231, 243, 240, 0.14);
+  --color-glass: rgba(10, 34, 48, 0.55);
+  --color-glass-strong: rgba(15, 47, 64, 0.72);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-ink);
+  color: var(--color-spotlight);
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-gel) 45%, transparent);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.site-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(61, 155, 143, 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 20%, rgba(212, 180, 131, 0.1), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 0% 80%, rgba(61, 155, 143, 0.1), transparent 45%),
+    linear-gradient(180deg, var(--color-ink) 0%, var(--color-stage) 100%);
+  background-attachment: fixed;
+}
+
+.glass-panel {
+  background: var(--color-glass);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass-panel-strong {
+  background: var(--color-glass-strong);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.section-y {
+  padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-y {
+    padding-block: 5.5rem;
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.8s ease-out both;
+}
+
+.fade-up-delay {
+  animation: fadeUp 0.8s ease-out 0.15s both;
+}
+
+.fade-up-delay-2 {
+  animation: fadeUp 0.8s ease-out 0.3s both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prose-site {
+  max-width: 42rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.prose-site h2,
+.prose-site h3 {
+  color: var(--color-spotlight);
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-site p + p {
+  margin-top: 1rem;
+}
+
+.prose-site a {
+  color: var(--color-gel);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-site strong {
+  color: var(--color-spotlight);
+  font-weight: 600;
+}
+
+.prose-site ul {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.prose-site li + li {
+  margin-top: 0.4rem;
+}
