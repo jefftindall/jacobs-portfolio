@@ -1,6 +1,6 @@
 # Jacob Tindall
 
-Personal site for **Jacob Tindall** — marine mammal conservation (dolphins and manatees) and music (piano and composition). Built with Astro so Jacob can edit pages in Cursor. Azure hosting is scaffolded but not applied yet.
+Personal site for **Jacob Tindall** — marine mammal conservation (dolphins and manatees) and music (piano and composition). Built with Astro so Jacob can edit pages in Cursor. Azure Static Web Apps hosts staging and prod; the public hostname is [`jaketindall.com`](docs/runbooks/custom-domain.md).
 
 This repo follows the same platform pattern as his sister’s site (Astro + Azure Static Web Apps + Terraform), with a different brand and kid-safe agent rules. Studio (voice publishing) is not in this milestone.
 
@@ -44,6 +44,7 @@ Copy an existing `.md` file, change the title and body, save, and refresh the br
 
 - [AGENTS.md](AGENTS.md) — rules for Cursor (privacy, brand, lint)
 - [Initial setup](docs/setup.md) — local first; Azure later (do not apply unless Jeff asks)
+- [Custom domain](docs/runbooks/custom-domain.md) — bind `jaketindall.com` on prod (Jeff only)
 - [Brand & UI style guide](docs/style-guide.md) — tokens and type (visual: `/style-guide`)
 
 ## Security model (later)

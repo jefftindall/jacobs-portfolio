@@ -224,7 +224,7 @@ resource "azurerm_static_web_app_custom_domain" "apex" {
   validation_type   = "dns-txt-token"
 }
 
-# www CNAME must already point at the SWA default hostname (Namecheap).
+# www CNAME must already point at the SWA default hostname (see docs/runbooks/custom-domain.md).
 # After apply: Portal → Custom domains → set apex as default so www 301s to apex.
 resource "azurerm_static_web_app_custom_domain" "www" {
   count             = var.custom_domain == "" ? 0 : 1

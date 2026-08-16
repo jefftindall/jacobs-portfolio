@@ -1,6 +1,6 @@
 # Initial setup
 
-Local development first. **Do not run `terraform apply` unless Jeff asks.** Azure scaffolding is copied from the family portfolio pattern and renamed for Jacob; it is not provisioned yet.
+Local development first. **Do not run `terraform apply` unless Jeff asks.** Staging and prod Azure exist in Jacob’s subscription; custom domain cutover is [`runbooks/custom-domain.md`](runbooks/custom-domain.md).
 
 ## Local (Jacob + Jeff)
 
@@ -45,8 +45,8 @@ When Jeff is ready:
 2. `cd infra/bootstrap` → `terraform init` / `plan` / `apply` (local state — back it up; it is gitignored). Bootstrap does **not** look up staging/prod GitHub Actions apps — those do not exist yet.
 3. Apply `infra/environments/staging`, then `prod` (each grants its own GHA identity on `kv-jacob-shared`)
 4. Put `SITE-CONTACT-EMAIL` in `kv-jacob-shared` (not in git)
-5. Leave custom domain empty until a real hostname exists
-6. CD workflow (`.github/workflows/azure-static-web-apps.yml`) stays skipped until GitHub OIDC vars exist
+5. Production custom domain (`jaketindall.com`): follow [`docs/runbooks/custom-domain.md`](runbooks/custom-domain.md) **before** merging a `custom_domain` change to `main` (CD applies prod Terraform)
+6. CD workflow (`.github/workflows/azure-static-web-apps.yml`) runs when GitHub OIDC vars exist
 
 Studio, Gemini, inquiry forms, Turnstile, and GA4 wait for a later phase.
 

@@ -1,9 +1,10 @@
 location        = "eastus2"
 subscription_id = "bf40ce12-d60e-4d58-8954-9f43445ca2af"
-custom_domain   = ""
+custom_domain   = "jaketindall.com"
 
-# Azure-generated SWA hostname + apex/www (when custom_domain is set) are registered automatically.
-# Keep www here only if you need it without setting custom_domain, or for extra hosts.
+# Apex + www bind on apply. Complete DNS first: docs/runbooks/custom-domain.md
+# Azure-generated SWA hostname + apex/www are registered automatically.
+# Keep additional_auth_hostnames empty unless you need extra hosts beyond apex/www.
 additional_auth_hostnames = []
 
 github_owner     = "jefftindall"

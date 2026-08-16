@@ -56,4 +56,4 @@ Jacob Tindall: **marine mammal conservation** (dolphins, manatees) and **music**
 
 ## Azure (Jeff only)
 
-Terraform lives in `infra/` with Jacob resource names and a **separate** tfstate account from Elyse’s site. Do not apply it in this milestone. See [`docs/setup.md`](docs/setup.md).
+Terraform lives in `infra/` with Jacob resource names and a **separate** tfstate account from Elyse’s site. Do not apply it unless Jeff explicitly asks. Production hostname cutover: [`docs/runbooks/custom-domain.md`](docs/runbooks/custom-domain.md). See [`docs/setup.md`](docs/setup.md).
