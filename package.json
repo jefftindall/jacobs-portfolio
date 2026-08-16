@@ -14,7 +14,9 @@
     "lint": "node scripts/lint.mjs",
     "lint:api": "node scripts/lint-api.mjs",
     "lint:actions-secrets": "node scripts/check-actions-secret-safety.mjs",
-    "lint:terraform": "node scripts/lint-terraform.mjs"
+    "lint:terraform": "node scripts/lint-terraform.mjs",
+    "test:smoke": "playwright test --config=playwright.smoke.config.ts",
+    "test:journey": "playwright test --config=playwright.journey.config.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.62.1",
     "typescript": "^5.9.2",
     "zod": "^4.4.3"
   }

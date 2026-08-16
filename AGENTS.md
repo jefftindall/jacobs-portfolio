@@ -7,6 +7,8 @@ See README.md and docs/ for project guidance.
 
 Do not `terraform apply`, push deploy tokens, or enable un-gated CD unless Jeff explicitly asks.
 
+The only path onto `main` is a pull request. **CI: static analysis** is the merge gate (it does not re-run after merge). **CD: main** deploys on `main`; Terraform apply is skipped when `infra/` did not change. After staging deploy, **Verify Staging** (Playwright smoke + journeys) must pass before production. After production deploy, **Smoke Production** checks major landings. See [`docs/runbooks/testing-strategy.md`](docs/runbooks/testing-strategy.md). When you add or remove public pages or flows, update those suites in the same change ([`.cursor/rules/post-deploy-tests.mdc`](.cursor/rules/post-deploy-tests.mdc)).
+
 ## Cursor Cloud
 
 Node >= 22.12 is required. Cloud agent runtime is [`.cursor/environment.json`](.cursor/environment.json): `npm ci` for the root site and `api/`. The `site` terminal starts Astro on port 4321.
@@ -17,7 +19,7 @@ Node >= 22.12 is required. Cloud agent runtime is [`.cursor/environment.json`](.
 npm run lint
 ```
 
-This mirrors [`.github/workflows/static-analysis.yml`](.github/workflows/static-analysis.yml):
+This mirrors [`.github/workflows/static-analysis.yml`](.github/workflows/static-analysis.yml) (PR merge gate only):
 
 | Check | Local command |
 |-------|----------------|
@@ -52,7 +54,7 @@ Jacob Tindall: **marine mammal conservation** (dolphins, manatees) and **music**
 - Dev: `npm run dev` (Astro, port 4321). Build: `npm run build`.
 - Content is markdown under `src/content/` (`conservation`, `music`, `news`, `gallery`, `pages`).
 - Adding a markdown file adds a live route (for example `src/content/news/my-update.md` → `/news/my-update`).
-- **Removed pages:** if a public URL goes away, add a 301 in [`public/staticwebapp.config.json`](public/staticwebapp.config.json) and the root [`staticwebapp.config.json`](staticwebapp.config.json).
+- **Removed pages:** if a public URL goes away, add a 301 in [`public/staticwebapp.config.json`](public/staticwebapp.config.json) and the root [`staticwebapp.config.json`](staticwebapp.config.json), and drop or update the Playwright smoke/journey that covered it.
 
 ## Azure (Jeff only)
 

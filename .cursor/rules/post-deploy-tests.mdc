@@ -1,0 +1,29 @@
+---
+description: Keep post-deploy Playwright smoke and journeys in sync with public pages
+globs: src/pages/**,src/content/**,src/lib/nav.ts,src/components/Nav.astro,src/components/Footer.astro,tests/**,playwright.*.ts,.github/workflows/azure-static-web-apps.yml
+alwaysApply: true
+---
+
+# Post-deploy tests
+
+Public UX is gated after deploy, not in `npm run lint`. When you add, rename, or remove a visitor-facing page or flow, update the Playwright suites in the same change.
+
+## What runs where
+
+| After | Job | Command | Coverage |
+|-------|-----|---------|----------|
+| Staging deploy | **Verify Staging** | `test:smoke` then `test:journey` | Landings plus full visitor journeys (blocks prod) |
+| Prod deploy | **Smoke Production** | `test:smoke` | Major landings and a short home → conservation/music hop |
+
+CI (`CI: static analysis`) stays the PR merge gate. Do not add Playwright to `npm run lint`.
+
+## Keep in sync
+
+- New public route → smoke landing assertion in `tests/smoke/public.spec.ts`. If it is a real user flow, add a journey in `tests/journeys/`.
+- Nav label/href change → `src/lib/nav.ts` (tests import this). Do not hard-code nav in specs.
+- Titles and slugs → read `src/content/` via `tests/helpers/content.ts`. Do not hard-code article titles.
+- Removed URL → 301 in both `staticwebapp.config.json` files, then drop or redirect the test.
+- Do not assert `SITE_CONTACT_EMAIL` or other secrets. Contact checks: `mailto:` exists and there is no visitor `<form>`.
+- Privacy: no school, home address, gamertags, or other kids in fixtures or assertions.
+
+Local: `$env:BASE_URL="http://localhost:4321"; npm run test:smoke` (with `npm run preview`). `/api/health` is skipped off Azure.
