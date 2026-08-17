@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/newsreader";
 @import "@fontsource-variable/source-sans-3";
 
 @theme {
-  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-display: "Newsreader Variable", "Newsreader", Georgia, serif;
   --font-sans: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
 
   --color-ink: #06141c;
