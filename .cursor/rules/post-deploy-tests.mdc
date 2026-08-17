@@ -21,7 +21,7 @@ CI (`CI: static analysis`) stays the PR merge gate. Do not add Playwright to `np
 
 - New public route → smoke landing assertion in `tests/smoke/public.spec.ts`. If it is a real user flow, add a journey in `tests/journeys/`.
 - Nav label/href change → `src/lib/nav.ts` (tests import this). Do not hard-code nav in specs.
-- Titles and slugs → read `src/content/` via `tests/helpers/content.ts`. Do not hard-code article titles.
+- Titles and slugs → read `src/content/` via `tests/helpers/content.ts`. Do not hard-code article titles. That helper sorts notes **newest `date` first**, same as the site.
 - Removed URL → 301 in both `staticwebapp.config.json` files, then drop or redirect the test.
 - Do not assert `SITE_CONTACT_EMAIL` or other secrets. Contact **today** is a `mailto:` link with no visitor `<form>` — use `a[href^="mailto:"]`, never match `@` in the link name. When a form is added, replace those assertions in the same change.
 - Privacy: no school, home address, gamertags, or other kids in fixtures or assertions.

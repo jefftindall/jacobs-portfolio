@@ -53,6 +53,7 @@ Jacob Tindall: **marine mammal conservation** (dolphins, manatees) and **music**
 
 - Dev: `npm run dev` (Astro, port 4321). Build: `npm run build`.
 - Content is markdown under `src/content/` (`conservation`, `music`, `news`, `gallery`, `pages`).
+- Lists are **newest first**. Every conservation, music, news, and gallery file needs a `date:`. Indexes use [`src/lib/contentSort.ts`](src/lib/contentSort.ts). See [`.cursor/rules/newest-first.mdc`](.cursor/rules/newest-first.mdc).
 - Adding a markdown file adds a live route (for example `src/content/news/my-update.md` → `/news/my-update`).
 - **Removed pages:** if a public URL goes away, add a 301 in [`public/staticwebapp.config.json`](public/staticwebapp.config.json) and the root [`staticwebapp.config.json`](staticwebapp.config.json), and drop or update the Playwright smoke/journey that covered it.
 

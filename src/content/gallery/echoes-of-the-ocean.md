@@ -2,9 +2,9 @@
 caption: CMA graphic for Echoes of the Ocean — Superheroes of Manatee Conservation, June 6, 2024.
 image: /images/conservation/echoes-of-the-ocean.jpg
 tags:
-  - conservation
+  - cma
   - manatees
-order: 3
+date: "2024-06-06"
 focus: center
 aspect: video
 ---
