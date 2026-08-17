@@ -2,39 +2,29 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MediaCard from '../components/MediaCard.astro';
-import CtaLink from '../components/CtaLink.astro';
-import { site, socials } from '../lib/site';
+import { site } from '../lib/site';
+import { newestFirst } from '../lib/contentSort';
 
-const items = (await getCollection('gallery')).sort(
-  (a, b) => (a.data.order ?? Number.POSITIVE_INFINITY) - (b.data.order ?? Number.POSITIVE_INFINITY),
-);
+const items = newestFirst(await getCollection('gallery'));
 
 const tags = items.length ? ['all', ...new Set(items.flatMap((i) => i.data.tags))] : [];
 ---
 
 <BaseLayout
   title="Gallery"
-  description={`Photos for ${site.name} — ocean, music, and projects. Add images under public/images/.`}
+  description={`Photos for ${site.name} — Belize field work, Clearwater Marine Aquarium, and music.`}
 >
   <section class="mx-auto max-w-6xl px-6 py-16 md:py-24" data-gallery>
     <p class="text-sm uppercase tracking-[0.2em] text-gel">Media</p>
     <h1 class="mt-3 font-display text-5xl text-spotlight md:text-6xl">Gallery</h1>
     <p class="mt-4 max-w-2xl text-muted">
-      Photos Jacob and a parent are comfortable sharing. No pictures of other kids, and no location
-      tags. More pictures also live on Facebook.
+      Photos from manatee health assessments, CMA, and piano-adjacent days. No pictures of other
+      kids.
     </p>
-    <div class="mt-6">
-      <CtaLink href={socials.facebook.href} variant="secondary" external>
-        Photos on Facebook
-      </CtaLink>
-    </div>
 
     {
       items.length === 0 ? (
-        <p class="mt-12 max-w-xl text-muted">
-          No photos yet. Drop an image in <code class="text-gold">public/images/</code> and add a
-          markdown file in <code class="text-gold">src/content/gallery/</code>.
-        </p>
+        <p class="mt-12 max-w-xl text-muted">No photos yet.</p>
       ) : (
         <>
           <div

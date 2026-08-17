@@ -27,6 +27,7 @@ export const socials = {
 export const soundcloud = {
   ...socials.soundcloud,
   tracks: [
+    // Newest first (Natures Wedding 2026-03-14, then February 2026 tracks).
     {
       title: 'Natures Wedding',
       href: 'https://soundcloud.com/jacob-tindall-official/natures-wedding',
@@ -49,9 +50,9 @@ export const site = {
   url: siteUrl(),
   email: requiredSiteEnv('SITE_CONTACT_EMAIL', import.meta.env.SITE_CONTACT_EMAIL),
   shortBio:
-    'Jacob Tindall cares about protecting marine mammals — especially dolphins and manatees — and about making music at the piano.',
+    'Jacob Tindall cares about protecting marine mammals — especially dolphins and manatees — and about making music at the piano. He has joined Belize manatee health assessments with Clearwater Marine Aquarium Research Institute.',
   description:
-    'Jacob Tindall’s personal site: marine mammal conservation (dolphins and manatees), piano, and music composition.',
+    'Jacob Tindall’s personal site: marine mammal conservation (dolphins and manatees), Belize field work, piano, and music composition.',
   knowsAbout: [
     'Marine mammal conservation',
     'Dolphins',

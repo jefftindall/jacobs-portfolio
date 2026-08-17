@@ -1,0 +1,32 @@
+---
+description: Newest content first on public lists (news, conservation, gallery, music)
+alwaysApply: true
+---
+
+# Newest first
+
+Public lists are **reverse chronological**: newest `date` at the top.
+
+## Required
+
+- Every conservation, music, news, and gallery markdown file has a `date:` (the event or publish day, `YYYY-MM-DD`).
+- Indexes and home shortcuts sort with `newestFirst()` from [`src/lib/contentSort.ts`](src/lib/contentSort.ts). Do not sort those lists by a manual `order` field.
+- Hardcoded lists (for example SoundCloud tracks in `src/lib/site.ts`) stay newest-first too.
+- On `/conservation`, the large card is the **newest** note; the grid is the rest, still newest-first.
+- Tests that walk notes (`tests/helpers/content.ts`) must use the same date descending sort.
+
+## Examples
+
+```yaml
+# ✅ quote the day so Astro keeps the field
+date: "2026-07-16"
+```
+
+```ts
+// ❌ BAD
+items.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+// ✅ GOOD
+import { newestFirst } from '../lib/contentSort';
+const items = newestFirst(await getCollection('conservation'));
+```

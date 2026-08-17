@@ -1,6 +1,6 @@
 ---
 title: Piano pieces on SoundCloud
-date: 2026-03-14
+date: "2026-03-14"
 description: Listen to Jacob’s original piano recordings, including Natures Wedding and Battle Cry in C Minor.
 tags:
   - music

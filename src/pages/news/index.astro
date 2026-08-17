@@ -2,10 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import { newestFirst } from '../../lib/contentSort';
 
-const posts = (await getCollection('news'))
-  .filter((n) => !n.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = newestFirst((await getCollection('news')).filter((n) => !n.data.draft));
 ---
 
 <BaseLayout

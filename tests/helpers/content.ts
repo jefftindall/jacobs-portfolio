@@ -38,24 +38,28 @@ function listMarkdown(collection: string): { id: string; fm: Frontmatter; raw: s
     });
 }
 
-function orderedNotes(collection: string): { id: string; title: string }[] {
+function datedNotes(collection: string): { id: string; title: string }[] {
   return listMarkdown(collection)
-    .map((item) => ({
-      id: item.id,
-      title: item.fm.title ?? item.id,
-      order: item.fm.order ? Number(item.fm.order) : 99,
-    }))
-    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+    .map((item) => {
+      const parsedDate = item.fm.date ? Date.parse(item.fm.date) : 0;
+      return {
+        id: item.id,
+        title: item.fm.title ?? item.id,
+        date: Number.isNaN(parsedDate) ? 0 : parsedDate,
+      };
+    })
+    .sort((a, b) => b.date - a.date || a.id.localeCompare(b.id))
+    .map(({ id, title }) => ({ id, title }));
 }
 
 export function conservationNotes(): { id: string; title: string }[] {
-  const notes = orderedNotes('conservation');
+  const notes = datedNotes('conservation');
   if (!notes.length) throw new Error('No conservation notes in src/content/conservation');
   return notes;
 }
 
 export function musicNotes(): { id: string; title: string }[] {
-  const notes = orderedNotes('music');
+  const notes = datedNotes('music');
   if (!notes.length) throw new Error('No music notes in src/content/music');
   return notes;
 }

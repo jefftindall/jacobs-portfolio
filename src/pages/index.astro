@@ -8,17 +8,13 @@ import CtaLink from '../components/CtaLink.astro';
 import PostCard from '../components/PostCard.astro';
 import { site, socials } from '../lib/site';
 import { buildPersonJsonLd } from '../lib/personSchema';
+import { newestFirst } from '../lib/contentSort';
 
-const conservation = (await getCollection('conservation'))
-  .filter((item) => item.data.species)
-  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-const music = (await getCollection('music')).sort(
-  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+const conservation = newestFirst(
+  (await getCollection('conservation')).filter((item) => item.data.species),
 );
-const news = (await getCollection('news'))
-  .filter((n) => !n.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+const music = newestFirst(await getCollection('music'));
+const news = newestFirst((await getCollection('news')).filter((n) => !n.data.draft)).slice(0, 2);
 
 const person = buildPersonJsonLd({
   '@id': `${site.url}/#person`,
@@ -41,8 +37,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout description={site.description} jsonLd={jsonLd} hideFooterCta>
-  <Hero />
+<BaseLayout description={site.description} jsonLd={jsonLd} hideFooterCta image="/images/hero.jpg">
+  <Hero support="Belize manatee assessments, a friendship with a rescue dolphin, and piano pieces you can hear." />
 
   <section class="section-y border-b border-line" aria-labelledby="passions-heading">
     <div class="mx-auto max-w-6xl px-6">
@@ -50,7 +46,7 @@ const jsonLd = {
         <SectionHeader
           eyebrow="Passions"
           title="Two big loves"
-          support="Protecting marine mammals, and making music — from a friendship with a rescue dolphin to piano pieces you can hear."
+          support="Protecting marine mammals, and making music — from Belize field work and a friendship with a rescue dolphin to piano pieces you can hear."
         />
       </div>
       <div class="mt-10 grid gap-6 md:grid-cols-2">
@@ -58,7 +54,8 @@ const jsonLd = {
           <p class="text-sm uppercase tracking-[0.2em] text-gel">Ocean</p>
           <h3 class="mt-3 font-display text-3xl text-spotlight">Conservation</h3>
           <p class="mt-3 text-muted">
-            Dolphins, manatees, and the work of keeping marine mammals safe.
+            Dolphins, manatees, Belize health assessments, and volunteering at Clearwater Marine
+            Aquarium.
           </p>
           <ul class="mt-6 space-y-2 text-spotlight/90">
             {
@@ -107,7 +104,7 @@ const jsonLd = {
         <SectionHeader
           eyebrow="Listen & look"
           title="Around the web"
-          support="Recordings, photos, and a news story from Clearwater Marine Aquarium summer camp."
+          support="Recordings, photos from the field, and a news story from Clearwater Marine Aquarium summer camp."
         />
       </div>
       <div class="mt-10 grid gap-6 md:grid-cols-3">
@@ -125,15 +122,13 @@ const jsonLd = {
         </GlassPanel>
         <GlassPanel strong class="p-8">
           <p class="text-sm uppercase tracking-[0.2em] text-gel">Photos</p>
-          <h3 class="mt-3 font-display text-2xl text-spotlight">Facebook</h3>
+          <h3 class="mt-3 font-display text-2xl text-spotlight">Gallery</h3>
           <p class="mt-3 text-muted">
-            Pictures Jacob and a parent are comfortable sharing. This site does not copy other
-            people’s kids.
+            Belize assessments, CMA, and piano-adjacent pictures Jacob and a parent are comfortable
+            sharing.
           </p>
           <div class="mt-8">
-            <CtaLink href={socials.facebook.href} variant="secondary" external>
-              Photos on Facebook
-            </CtaLink>
+            <CtaLink href="/gallery" variant="secondary">Browse the gallery</CtaLink>
           </div>
         </GlassPanel>
         <GlassPanel strong class="p-8">
@@ -156,7 +151,7 @@ const jsonLd = {
         <SectionHeader
           eyebrow="Journal"
           title="Latest notes"
-          support="Press, camp stories, and new recordings."
+          support="Press, field notes, and new recordings."
           href="/news"
           linkLabel="All news →"
         />

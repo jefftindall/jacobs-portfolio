@@ -26,6 +26,11 @@
       "statusCode": 301
     },
     {
+      "route": "/conservation/belize",
+      "redirect": "/conservation/belize-2025",
+      "statusCode": 301
+    },
+    {
       "route": "/music/",
       "redirect": "/music",
       "statusCode": 301

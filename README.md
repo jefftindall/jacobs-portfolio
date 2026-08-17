@@ -36,7 +36,7 @@ Run this before every commit. It checks Terraform, the Astro site, the API stub,
 | About | `src/content/pages/about.md` | `/about` |
 | Photos | `public/images/` + `src/content/gallery/` | `/gallery` |
 
-Copy an existing `.md` file, change the title and body, save, and refresh the browser.
+Copy an existing `.md` file, change the title, **`date:`** (event or publish day), and body, save, and refresh the browser. News, conservation, music, and gallery lists show **newest dates first**.
 
 **Work on a branch.** Open a pull request; Jeff reviews and merges `main`. CI is the PR gate. Direct pushes to `main` are blocked.
 

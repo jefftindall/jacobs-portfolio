@@ -35,15 +35,14 @@ import { site, socials } from '../lib/site';
     <GlassPanel strong class="mt-6 p-6 md:p-8">
       <p class="text-sm uppercase tracking-[0.2em] text-gold">Listen &amp; look</p>
       <p class="mt-3 text-muted">
-        Music is on SoundCloud. Photos Jacob and a parent are comfortable sharing are on Facebook.
-        Those sites have their own privacy rules.
+        Music is on SoundCloud. Photos live in the gallery. SoundCloud has its own privacy rules.
       </p>
       <div class="mt-6 flex flex-wrap gap-4">
         <CtaLink href={socials.soundcloud.href} variant="secondary" external>
           SoundCloud
         </CtaLink>
-        <CtaLink href={socials.facebook.href} variant="secondary" external>
-          Facebook
+        <CtaLink href="/gallery" variant="secondary">
+          Gallery
         </CtaLink>
       </div>
     </GlassPanel>

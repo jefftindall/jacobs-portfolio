@@ -1,15 +1,15 @@
 ---
 title: Meeting conservation heroes
 summary: At 11, Jacob met Jamal Galves and Dr. Buddy Powell — the same age Jamal was when he first met Buddy.
+date: "2024-06-06"
 image: /images/conservation/jacob-buddy-powell.jpg
 imageAlt: Jacob with Dr. Buddy Powell at Echoes of the Ocean
-featured: true
-order: 1
+featured: false
 ---
 
 On June 6, 2024, Jacob went to [Clearwater Marine Aquarium](https://www.cmaquarium.org/) for **Echoes of the Ocean**, a speaker night called “Superheroes of Manatee Conservation.” He was **11**. He met people whose work he had studied: [Jamal Galves](https://www.neaq.org/person/jamal-galves/), [Dr. James “Buddy” Powell](https://www.cmaquarium.org/manatee-rehabilitation-center/), and [Tanya Ward](https://www.cmaquarium.org/manatee-rehabilitation-center/).
 
-That age is part of why the night mattered. [CMA’s Belize program story](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) says Jamal was also 11 when he first met Dr. Powell at a dock in Belize and asked to join the manatee team. Hearing that from the people who lived it made the path feel close enough to reach.
+That age is part of why the night mattered. [CMA’s Belize program story](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) says Jamal was also 11 when he first met Dr. Powell at a dock in Belize and asked to join the manatee team. Hearing that from the people who lived it made the path feel close enough to reach. During the same CMA camp stretch, Jamal invited Jacob to join Belize manatee work.
 
 <figure>
   <img src="/images/conservation/jacob-galves-powell.jpg" alt="Jacob talking with Dr. Buddy Powell and Jamal Galves" width="1080" height="1080" />
@@ -29,4 +29,11 @@ That age is part of why the night mattered. [CMA’s Belize program story](https
 
 **Tanya Ward** is CMA’s manatee rehabilitation manager. She helps rescued manatees through second-stage care — the stretch between hospital treatment and a possible return to the wild.
 
-Read more about manatees on the [manatees note](/conservation/manatees).
+In November 2025, Jacob returned to CMA for a Celebration of Life for Dr. Powell, spent time with Nicholas the dolphin, and wrote a thank-you to Jamal and Buddy for the Belize assessments.
+
+<figure>
+  <img src="/images/conservation/thank-you-buddy.jpg" alt="Jacob’s handwritten thank-you drawing for Dr. Buddy Powell and Jamal Galves, with a manatee and a list of people and animals who inspire him" width="1179" height="882" />
+  <figcaption>A thank-you Jacob wrote after Belize, brought to CMA’s Celebration of Life for Dr. Powell.</figcaption>
+</figure>
+
+The expeditions that invitation opened are [Belize 2025](/conservation/belize-2025) and [Belize 2026](/conservation/belize-2026).

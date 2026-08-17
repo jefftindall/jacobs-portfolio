@@ -2,9 +2,9 @@
 caption: Jacob talking with Dr. Buddy Powell and Jamal Galves after the program.
 image: /images/conservation/jacob-galves-powell.jpg
 tags:
-  - conservation
+  - cma
   - manatees
-order: 2
+date: "2024-06-06"
 focus: center
 aspect: square
 ---

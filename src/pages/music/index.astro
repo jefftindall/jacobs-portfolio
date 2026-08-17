@@ -5,10 +5,9 @@ import GlassPanel from '../../components/GlassPanel.astro';
 import SoundCloudEmbed from '../../components/SoundCloudEmbed.astro';
 import CtaLink from '../../components/CtaLink.astro';
 import { soundcloud } from '../../lib/site';
+import { newestFirst } from '../../lib/contentSort';
 
-const items = (await getCollection('music')).sort(
-  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
-);
+const items = newestFirst(await getCollection('music'));
 ---
 
 <BaseLayout

@@ -1,6 +1,6 @@
 ---
 title: A special friend at Clearwater Marine Aquarium
-date: 2023-06-17
+date: "2023-06-17"
 description: Tampa Bay 28 visited CMA summer camp, where Jacob formed a bond with Nicholas the dolphin.
 tags:
   - conservation

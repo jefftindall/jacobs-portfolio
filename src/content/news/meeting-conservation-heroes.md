@@ -1,6 +1,6 @@
 ---
 title: Meeting manatee conservation heroes
-date: 2024-06-07
+date: "2024-06-07"
 description: At 11, Jacob met Jamal Galves and Dr. Buddy Powell at CMA — the same age Jamal was when he first met Buddy.
 tags:
   - conservation
@@ -12,6 +12,6 @@ On June 6, 2024, Jacob went to [Clearwater Marine Aquarium](https://www.cmaquari
 
 That is the same age [CMA says](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) Jamal was when he first met Dr. Powell and asked to join the manatee team in Belize.
 
-Jamal later [reshared a parent’s note](https://www.linkedin.com/posts/jamal-galves-651aa8a0_inspiration-conservation-activity-7204876672318259202-9uHR/) from that night. The photos now live on this site so the story can last.
+Jamal invited Jacob to join Belize manatee work. The expeditions that followed are [Belize 2025](/conservation/belize-2025) and [Belize 2026](/conservation/belize-2026).
 
-The full note, with pictures, is on [Meeting conservation heroes](/conservation/meeting-heroes).
+The full origin note, with pictures, is on [Meeting conservation heroes](/conservation/meeting-heroes).
