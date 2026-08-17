@@ -20,6 +20,8 @@ CMA Research Institute’s [Belize manatee program](https://mission.cmaquarium.o
 
 A typical assessment Jacob saw includes capture in safe shallow water, a timed health exam, urine and blood sampling, tissue sampling, identification marks, and sometimes a PIT tag or a temporary belt tag, then release. Those are field procedures from the trips he joined, not invented population statistics.
 
+Respiration is watched the whole time the animal is on the boat. If a manatee goes about a minute without a breath, the team stimulates it. Jacob built a [breath-tracker app](/conservation/breath-tracker) that logs each breath and sounds an alert at that one-minute mark, then field-tested it in Belize in 2026.
+
 In Florida, CMA’s [Dr. James “Buddy” Powell Manatee Rehabilitation Center](https://www.cmaquarium.org/manatee-rehabilitation-center/) gives rescued Florida manatees a place to finish recovering before some of them can go back to the wild. Tanya Ward manages that care. CMA is part of the Manatee Rescue & Rehabilitation Partnership. This page does not invent injury counts; CMA and [NOAA](https://www.fisheries.noaa.gov/species/west-indian-manatee) publish current guidance.
 
 ## What people can do

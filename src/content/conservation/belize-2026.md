@@ -1,6 +1,6 @@
 ---
 title: Belize 2026
-summary: Second season in Placencia — dolphins, Celeshia, a breath-tracker app Jacob built, and diving with Glenford Guy.
+summary: Second season in Placencia — dolphins, Celeshia, a breath-tracker app Jacob built, and scuba with Glenford Guy.
 date: "2026-05-24"
 image: /images/conservation/celeshia.jpg
 imageAlt: Field team with Jacob and a large female manatee marked F220 during a Belize assessment
@@ -18,14 +18,31 @@ One morning started with dolphins near the boat. While searching a mangrove chan
   <figcaption>A male assessed in 2026 — identification mark M217.</figcaption>
 </figure>
 
-Assessments that week included healthy males and a **903 lb** female named **Celeshia**, after Jamal Galves’s wife. Jacob field-tested a **manatee breath-tracker app he built** — tapping each surfacing so the phone could log times and an average breaths-per-minute rate. He planned to adjust it at home for aquariums and conservationists. This site does not claim it is listed in an app store.
+Assessments that week included healthy males and a **903 lb** female named **Celeshia**, after Jamal Galves’s wife.
+
+On the 2025 trip, Jacob had learned to watch the clock by hand: if a manatee went more than about a minute without a breath, the team stimulated respiration. For 2026 he brought a **phone app he built** so that watch is a tap, a log, and an audible alert when a minute passes with no breath. He field-tested it on May 25 during two male exams. The full story of how it works is [The manatee breath tracker](/conservation/breath-tracker). This site does not claim the app is listed in an app store.
 
 <figure>
-  <img src="/images/conservation/breath-tracker.jpg" alt="Summary screen of Jacob’s manatee breath-tracker app showing average breaths per minute and timestamps" width="942" height="2048" />
-  <figcaption>Field test of the breath-tracker: timestamps and an average respiration rate from one exam.</figcaption>
+  <img src="/images/conservation/assessment-m2.jpg" alt="A male manatee marked M2 on a blue tarp during a Belize health assessment" width="1536" height="2048" />
+  <figcaption>A male on the deck the day the breath tracker ran through a live exam.</figcaption>
 </figure>
 
-After the last assessment day, Glenford Guy took the group scuba diving (a two-tank dive). Dr. Adrienne Adkins continued teaching manatee health between the water days.
+After the last assessment day, Glenford Guy took the group scuba diving — a two-tank dive at **Gladden Spit and Silk Cayes Marine Reserve**. Dr. Adrienne Adkins continued teaching manatee health between the water days.
+
+<figure>
+  <img src="/images/conservation/scuba-dock-glenford.jpg" alt="Jacob with Glenford Guy on a dock, scuba fins and a Team Rescue bag beside them" width="1536" height="2048" />
+  <figcaption>With Glenford Guy before the two-tank dive — fins on the bench, Team Rescue bag on the dock.</figcaption>
+</figure>
+
+<figure>
+  <img src="/images/conservation/silk-cayes-reserve.jpg" alt="Jacob and Glenford Guy in front of the Gladden Spit and Silk Cayes Marine Reserve sign" width="1536" height="2048" />
+  <figcaption>Gladden Spit and Silk Cayes Marine Reserve, the dive site after assessment week.</figcaption>
+</figure>
+
+<figure>
+  <img src="/images/conservation/discovery-diving-boat.jpg" alt="Jacob on a dive boat after scuba, with a Discovery Diving sticker behind him" width="1536" height="2048" />
+  <figcaption>On the dive boat after the tanks — still in the water, not on an exam tarp.</figcaption>
+</figure>
 
 These weights, names, and procedures are from the 2026 trip. They are not population statistics. CMA’s [Belize manatee page](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) and [NOAA](https://www.fisheries.noaa.gov/species/west-indian-manatee) publish the public science and rules.
 
