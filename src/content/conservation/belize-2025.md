@@ -26,7 +26,7 @@ On the water, Jacob learned the exam sequence used on wild West Indian manatees:
 
 Later days included a boat-strike survivor whose wounds the veterinarian cleaned, two females in Placencia, and an adult male of more than 800 lb fitted with a **belt tag** — a temporary, reusable tag the team described as designed to release on its own after months of tracking. One weather day went to a long drone search instead of captures. Jacob drove a support boat that afternoon.
 
-**Last water day:** the team released one animal because the water was too deep for a safe capture. The second was **Todd**, more than **860 lb**. Jacob helped stimulate breaths by wetting the snout when respiration paused for more than about a minute, then helped with the release.
+**Last water day:** the team released one animal because the water was too deep for a safe capture. The second was **Todd**, more than **860 lb**. Jacob helped stimulate breaths by wetting the snout when respiration paused for more than about a minute, then helped with the release. That one-minute pause is what he later built into [the breath-tracker app](/conservation/breath-tracker) — a tap for each breath, and an alert if a minute goes by without one.
 
 <figure>
   <img src="/images/conservation/todd-assessment.jpg" alt="Manatee M209 on a boat deck during a health assessment, with CMA Rescue gear and monitoring equipment" width="1536" height="2048" />
