@@ -23,7 +23,7 @@ Hobbies (Fortnite, Minecraft) may appear as a short note **without** gamertags.
 **Deep ocean with a music-warm accent.**
 
 - Navy depths, seafoam links, sand CTAs
-- Fraunces (display) + Source Sans 3 (body)
+- Newsreader (display) + Source Sans 3 (body)
 - Glass panels, generous spacing, one job per section
 
 Avoid: purple gradients, neon, theatre gold-on-stage, cream newspaper layouts.
@@ -46,8 +46,8 @@ Contrast rule: primary CTAs use **sand (`gold`) on ink**.
 
 | Role | Font | Typical scale |
 |------|------|----------------|
-| Brand / H1 | Fraunces (`font-display`) | `text-5xl`–`text-8xl` |
-| Section titles | Fraunces | `text-4xl`–`text-5xl` |
+| Brand / H1 | Newsreader (`font-display`) | `text-5xl`–`text-8xl` |
+| Section titles | Newsreader | `text-4xl`–`text-5xl` |
 | Body | Source Sans 3 (`font-sans`) | `text-base` / `text-lg`, `text-muted` |
 | Eyebrow | Source Sans 3 uppercase | `text-sm tracking-[0.25em] text-gel` or `text-gold` |
 
