@@ -40,7 +40,7 @@ const tags = items.length ? ['all', ...new Set(items.flatMap((i) => i.data.tags)
                 aria-selected={i === 0 ? 'true' : 'false'}
                 class="gallery-filter min-h-11 rounded-sm border border-line px-4 py-2 text-sm capitalize text-muted transition aria-selected:border-gold aria-selected:bg-gold/15 aria-selected:text-spotlight"
               >
-                {tag}
+                {tag === 'cma' ? 'CMA' : tag}
               </button>
             ))}
           </div>
