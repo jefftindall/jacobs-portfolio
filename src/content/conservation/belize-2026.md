@@ -34,16 +34,6 @@ After the last assessment day, Glenford Guy took the group scuba diving — a tw
   <figcaption>With Glenford Guy before the two-tank dive — fins on the bench, Team Rescue bag on the dock.</figcaption>
 </figure>
 
-<figure>
-  <img src="/images/conservation/silk-cayes-reserve.jpg" alt="Jacob and Glenford Guy in front of the Gladden Spit and Silk Cayes Marine Reserve sign" width="1536" height="2048" />
-  <figcaption>Gladden Spit and Silk Cayes Marine Reserve, the dive site after assessment week.</figcaption>
-</figure>
-
-<figure>
-  <img src="/images/conservation/discovery-diving-boat.jpg" alt="Jacob on a dive boat after scuba, with a Discovery Diving sticker behind him" width="1536" height="2048" />
-  <figcaption>On the dive boat after the tanks — still in the water, not on an exam tarp.</figcaption>
-</figure>
-
 These weights, names, and procedures are from the 2026 trip. They are not population statistics. CMA’s [Belize manatee page](https://mission.cmaquarium.org/research-institute/manatee-research/belize-manatee-conservation/) and [NOAA](https://www.fisheries.noaa.gov/species/west-indian-manatee) publish the public science and rules.
 
 What came next at the aquarium is on [Volunteering at CMA](/conservation/volunteering).
