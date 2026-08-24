@@ -31,7 +31,10 @@ test.describe('visitor journeys', () => {
 
   test('VISIT-02 music index to notes', { tag: '@content' }, async ({ page }) => {
     await waitForOk(page, '/');
-    await page.getByRole('link', { name: 'Explore music' }).click();
+    await page
+      .locator('section[aria-labelledby="passions-heading"]')
+      .getByRole('link', { name: 'Explore music' })
+      .click();
     await expect(page).toHaveURL(/\/music\/?$/);
     await expect(page.getByRole('heading', { name: 'Music', level: 1 })).toBeVisible();
 
