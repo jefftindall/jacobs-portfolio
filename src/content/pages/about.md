@@ -29,6 +29,6 @@ In July 2026 he came back to CMA on the other side of the glass: two weeks as a 
   <figcaption>Dive Team volunteering — cleaning a habitat from the inside.</figcaption>
 </figure>
 
-Piano is the other constant. His first recital was at **ACT I** in Cartersville. Later recordings — pieces such as Natures Wedding and Battle Cry in C Minor — are on [SoundCloud](https://soundcloud.com/jacob-tindall-official) and the [music](/music) page.
+Piano is the other constant. His first recital was at **ACT I** in Cartersville. Later recordings — pieces such as Natures Wedding and Battle Cry in C Minor — are described on the [music](/music) page.
 
 In spare time he also likes games like Fortnite and Minecraft. Photos from the field and the aquarium live in the [gallery](/gallery). This site does not list usernames, friend lists, or Discord.
