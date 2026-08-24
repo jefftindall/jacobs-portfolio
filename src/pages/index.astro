@@ -6,7 +6,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import CtaLink from '../components/CtaLink.astro';
 import PostCard from '../components/PostCard.astro';
-import { site, socials } from '../lib/site';
+import { site } from '../lib/site';
 import { buildPersonJsonLd } from '../lib/personSchema';
 import { newestFirst } from '../lib/contentSort';
 
@@ -77,7 +77,7 @@ const jsonLd = {
           <h3 class="mt-3 font-display text-3xl text-spotlight">Music</h3>
           <p class="mt-3 text-muted">
             Piano and composition — original pieces such as Natures Wedding and Battle Cry in C
-            Minor, on SoundCloud.
+            Minor.
           </p>
           <ul class="mt-6 space-y-2 text-spotlight/90">
             {
@@ -110,14 +110,12 @@ const jsonLd = {
       <div class="mt-10 grid gap-6 md:grid-cols-3">
         <GlassPanel strong class="p-8">
           <p class="text-sm uppercase tracking-[0.2em] text-gold">Music</p>
-          <h3 class="mt-3 font-display text-2xl text-spotlight">SoundCloud</h3>
+          <h3 class="mt-3 font-display text-2xl text-spotlight">Piano &amp; composition</h3>
           <p class="mt-3 text-muted">
             Original piano pieces, including Natures Wedding, NASCAR, and Battle Cry in C Minor.
           </p>
           <div class="mt-8">
-            <CtaLink href={socials.soundcloud.href} variant="secondary" external>
-              Listen on SoundCloud
-            </CtaLink>
+            <CtaLink href="/music" variant="secondary">Explore music</CtaLink>
           </div>
         </GlassPanel>
         <GlassPanel strong class="p-8">
